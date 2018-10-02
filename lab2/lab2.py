@@ -1,6 +1,5 @@
 import lab2_module
 
-
 Obj = lab2_module.rpnCalculator()
 
 print("First number")
