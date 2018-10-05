@@ -1,5 +1,6 @@
 from socket import *
 import lab2_module
+import pickle
 
 s = socket(AF_INET, SOCK_STREAM)
 
@@ -27,6 +28,8 @@ while True:
         Obj.AddSub()
 
     elif ret == 'close':
+        obj_serialized = pickle.dumps(Obj)
+        c.send(obj_serialized)
         break
 
 Obj.print()

@@ -1,4 +1,6 @@
 from socket import *
+import pickle
+import lab2_module
 
 s = socket(AF_INET, SOCK_STREAM)
 
@@ -20,5 +22,7 @@ s.send(str(input('3rd number: ')).encode())
 s.send('addsub'.encode())
 
 s.send('close'.encode())
+Obj = pickle.loads(s.recv(1024))
+Obj.print()
 
 s.close();
