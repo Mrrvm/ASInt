@@ -1,5 +1,5 @@
 from socket import *
-
+import lab2_module
 
 s = socket(AF_INET, SOCK_STREAM)
 
@@ -12,22 +12,22 @@ s.bind((host, port))
 s.listen(5)
 
 c, addr = s.accept()
-
-print 'Connection from', addr
+Obj = lab2_module.rpnCalculator()
+print('Connection from')
+print(addr)
 
 while True:
-	
-	ret.clear()
-	ret = c.recv(32)
-	if ret == 'push':
-		ret.clear()
-		ret = c.recv(32)
-		print (ret)
+    ret = c.recv(32).decode()
+    print(ret)
+    if ret == 'push':
+        ret = c.recv(32).decode()
+        Obj.pushValue(int(ret))
 
-	elif ret == 'addsub':
-		ret.clear()
-		ret = c.recv(32)
-		print ('hello')
+    elif ret == 'addsub':
+        Obj.AddSub()
 
+    elif ret == 'close':
+        break
 
+Obj.print()
 c.close()
