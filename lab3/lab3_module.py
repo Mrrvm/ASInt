@@ -20,7 +20,6 @@ class BookDB:
     def __init__(self):
         self.books = []
 
-
     def addBook(self, b):
         nb = Book()
         nb.author = b.author
