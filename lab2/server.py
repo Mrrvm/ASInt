@@ -18,10 +18,10 @@ print('Connection from')
 print(addr)
 
 while True:
-    ret = c.recv(32).decode()
+    ret = c.recv(8).decode()
     print(ret)
     if ret == 'push':
-        ret = c.recv(32).decode()
+        ret = c.recv(8).decode()
         Obj.pushValue(int(ret))
 
     elif ret == 'addsub':
