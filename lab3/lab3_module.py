@@ -10,12 +10,15 @@ class Book:
         Book.book_id += 1
         self.identifier = Book.book_id
 
+    def print(self):
+        print("Title: " + self.title + "\nAuthor: " + self.author + "\nYear: " + str(self.publication_year))
+
 
 class BookDB:
     'BookDB class for lab3'
 
     def __init__(self):
-        self.books=[]
+        self.books = []
 
 
     def addBook(self, b):
@@ -27,14 +30,14 @@ class BookDB:
         self.books.append(nb)
 
 
-    def showBook(self, identifier):
+    #def showBook(self, identifier):
 
 
-    def list_authors(self, x):
+    #def list_authors(self, x):
 
 
-    def search_author(self, x):
+    #def search_author(self, x):
 
 
-    def search_year(self, x):
+    #def search_year(self, x):
 
