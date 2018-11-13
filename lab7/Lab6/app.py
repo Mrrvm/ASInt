@@ -23,10 +23,9 @@ def add_Book():
         return str(request.args)
     else:
         return str(request.form)
-    return render_template("addBookTemplate.html")
 
 @app.route('/API/books')
-def show_books(): 
+def show_books():
     books = db.listAllBooks()
     return jsonify([ob.__dict__ for ob in books])
 
@@ -34,20 +33,30 @@ def show_books():
 def show_authors():
     authors = db.listAllAuthors()
     print(authors)
-    return jsonify([ob.__dict__ for ob in authors])
+    return jsonify(authors)
 
 @app.route('/API/books/<id>', methods=['GET'])
-def single_book():
-    _id = str(request.data)
-    print(_id)
-    book = db.showBook(_id)
-    print(book)
-    return jsonify(book)
+def single_book(id):
+    book = db.showBook(int(id))
+    return jsonify(book.__dict__)
 
-#@app.route('/API/authors/<name>')
-#def single_author(): 
-#@app.route('/API/authors/<name>/year/<year>')
-#def books_of_author_year(): 
+@app.route('/API/authors/<name>')
+def single_author(name):
+    books = db.listBooksAuthor(name)
+    print(books)
+    return jsonify([ob.__dict__ for ob in books])
+
+@app.route('/API/authors/<name>/<year>')
+def books_of_author_year(name, year):
+    books_author = db.listBooksAuthor(name)
+    books_year = db.listBooksAuthor(int(year))
+    print(books_author)
+    print(books_year)
+    for b in books_author:
+        if b not in books_year:
+            books_author.remove(b)
+    print(books_author)
+    return jsonify([ob.__dict__ for ob in books_author])
 
 if __name__ == '__main__':
     app.run()
