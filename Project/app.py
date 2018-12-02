@@ -46,7 +46,7 @@ def showUsers():
     users = db.showAllUsers()
     return jsonify([ob.__dict__ for ob in users])
 
-@app.route('/admin/users/newuser', methods=['POST'])
+@app.route('/users/newuser', methods=['POST'])
 def addUser():
     u_id = request.json["id"]
     u_lat = request.json["lat"]
