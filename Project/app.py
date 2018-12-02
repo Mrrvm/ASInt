@@ -40,5 +40,28 @@ def single_building(id):
     building = db.showBuilding(int(id))
     return jsonify(building.__dict__)
 
+
+@app.route('/admin/users', methods=['GET'])
+def showUsers():
+    users = db.showAllUsers()
+    return jsonify([ob.__dict__ for ob in users])
+
+@app.route('/admin/users/newuser', methods=['POST'])
+def addUser():
+    u_id = request.json["id"]
+    u_lat = request.json["lat"]
+    u_long = request.json["long"]
+    if u_id == None or u_lat == None or u_long == None:
+        pass
+    else:
+        db.addUser(str(u_id), int(u_lat), int(u_long))
+        return '', 204
+
+
+@app.route('/admin/users/<id>', methods=['GET'])
+def single_user(id):
+    user = db.showUser(str(id))
+    return jsonify(user.__dict__)
+
 if __name__ == '__main__':
     app.run()

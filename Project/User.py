@@ -5,5 +5,5 @@ class User:
         self.long = long
 
     def __str__(self):
-        return "%d - %d - %d" % (self.id, self.lat, self.long)
+        return "%s - %d - %d" % (self.id, self.lat, self.long)
 

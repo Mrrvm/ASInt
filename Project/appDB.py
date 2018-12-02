@@ -18,3 +18,12 @@ class appDB:
 
     def showBuilding(self, id):
         return self.buildings[id]
+
+    def addUser(self, u_id, lat, long):
+        self.users[u_id] = User.User(u_id, lat, long)
+
+    def showAllUsers(self):
+        return list(self.users.values())
+
+    def showUser(self, id):
+        return self.users[id]
