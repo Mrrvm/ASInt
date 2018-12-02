@@ -6,5 +6,5 @@ class Building:
         self.id = b_id
 
     def __str__(self):
-        return "%d - %s - [%s - %s]" % (self.id, self.name, self.lat, self.long)
+        return "%d - %s - %d - %d" % (self.id, self.name, self.lat, self.long)
 
