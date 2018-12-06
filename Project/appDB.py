@@ -27,3 +27,6 @@ class appDB:
 
     def showUser(self, id):
         return self.users[id]
+
+    def getUsersKeys(self, id):
+        return self.users.keys()
