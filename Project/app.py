@@ -21,7 +21,7 @@ DEFAULT_LONG = -9.14
 @app.route('/admin/buildings', methods=['GET'])
 def showBuildings():
     buildings = db.showAllBuildings()
-    return jsonify([ob.__dict__ for ob in buildings])
+    return jsonify(buildings)
 
 @app.route('/admin/buildings/add', methods=['POST'])
 def addBuilding():
@@ -32,7 +32,7 @@ def addBuilding():
     if b_name == None or b_id == None or b_lat == None or b_long == None:
         pass
     else:
-        db.addBuilding(b_name, int(b_lat), int(b_long), int(b_id))
+        db.addBuilding(b_name, b_lat, b_long, b_id)
         return '', 204
 
 @app.route('/admin/buildings/remove', methods=['POST'])
@@ -41,13 +41,14 @@ def removeBuilding():
     if b_id == None:
         pass
     else:
-        db.removeBuilding(int(b_id))
+        db.removeBuilding(b_id)
         return '', 204
 
 @app.route('/admin/buildings/<id>', methods=['GET'])
 def single_building(id):
     building = db.showBuilding(int(id))
-    return jsonify(building.__dict__)
+    #return jsonify(building.__dict__)
+    return jsonify(building)
 
 
 @app.route('/admin/users', methods=['GET'])
