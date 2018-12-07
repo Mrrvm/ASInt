@@ -55,17 +55,6 @@ def showUsers():
     users = db.showAllUsers()
     return jsonify([ob.__dict__ for ob in users])
 
-@app.route('/users/newuser', methods=['POST'])
-def addUser():
-    u_id = request.json["id"]
-    u_lat = request.json["lat"]
-    u_long = request.json["long"]
-    if u_id == None or u_lat == None or u_long == None:
-        pass
-    else:
-        db.addUser(str(u_id), int(u_lat), int(u_long))
-        return '', 204
-
 
 @app.route('/users/login', methods=['GET'])
 def loginUser():
@@ -86,6 +75,7 @@ def authUser():
     request_url_info = "https://fenix.tecnico.ulisboa.pt/api/fenix/v1/person"
     request_info = requests.get(request_url_info, params=get_info_params)
     u_id = request_info.json()['username']
+    db.addUser(str(u_id), DEFAULT_LAT, DEFAULT_LONG)
     return '', 204
 
 @app.route('/admin/users/<id>', methods=['GET'])
