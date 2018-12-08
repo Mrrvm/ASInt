@@ -26,6 +26,7 @@
         <small>Welcome</small>
     </h1>
 
+
     <div class="row">
         <div class="col-md-8 col-sm-8 mb-4">
             <h2>{{ name }}</h2>
@@ -41,28 +42,61 @@
         document.getElementById("img").innerHTML = "<img src='"+image.src+"' />";
     </script>
 
+
+    <!-- Row -->
+    <form action="{{ userid }}/location" method="post">
+        <h4>Define new location ({{ lat }}:{{ long }})</h4>
+        <div class="row" style="padding: 15px">
+            <div class="col-md-4 col-sm-4 mb-4" >
+                <div class="form-group">
+                    <input type="text" class="form-control" id="lat" name="lat" placeholder="Enter latitude">
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 mb-4">
+                <div style="text-align: left;" class="form-group">
+                    <input type="text" class="form-control" id="long" name="long" placeholder="Enter longitude">
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 mb-4">
+                <button type="submit" style="border-radius: 0px;" class="btn btn-default btn-dark">Submit</button>
+            </div>
+        </div>
+    </form>
+    <!-- /.row -->
+    <!-- Row -->
+    <form action="{{ userid }}/send" method="post">
+    <h4>Send messages</h4>
+        <div class="row" style="padding: 15px">
+            <div class="col-md-8 col-sm-8 mb-8">
+                <input type="text" class="form-control" id="msg" name="msg" placeholder="Enter message">
+            </div>
+            <div class="col-md-4 col-sm-4 mb-4">
+                <div class="form-group">
+                    <button type="submit" style="border-radius: 0px;" class="btn btn-default btn-dark">Submit</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- /.row -->
+
+    <h4>Receive messages</h4>
     <div class="row" style="padding: 15px">
-        <form>
-          <div class="form-group">
-            <label for="lat">Latitude</label>
-            <input type="text" class="form-control" id="lat" placeholder="Enter latitude">
-          </div>
-          <div class="form-group">
-            <label for="lon">Latitude</label>
-            <input type="text" class="form-control" id="lon" placeholder="Enter longitude">
-          </div>
-          <button type="submit" style="border-radius: 0px;" class="btn btn-default btn-dark">Submit</button>
-        </form>
+    </div>
+
+    <h4>Near me</h4>
+    <div class="row" style="padding: 15px">
     </div>
 
 </div>
 <!-- Footer -->
 <footer class="py-5 bg-dark">
+    <!-- Container -->
     <div class="container">
         <p class="m-0 text-center text-white">2018, Made with <img width="15px" src="/static/love.png"> for Internet Based Systems Architecture </p>
     </div>
     <!-- /.container -->
 </footer>
+<!-- /.footer -->
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

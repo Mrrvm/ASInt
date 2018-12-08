@@ -97,8 +97,16 @@ def loggedUser(id):
     u_data = db.getUser(id)
     u_name = u_data['name']
     u_photo = u_data['photo']
-    return render_template("user.html", name=u_name, photo=u_photo)
+    u_lat = u_data['lat']
+    u_long = u_data['long']
+    return render_template("user.html", name=u_name, photo=u_photo, userid=id, lat=u_lat, long=u_long)
 
+@app.route('/user/<id>/location', methods=['POST'])
+def defineLocation(id):
+    lat = request.form["lat"]
+    long = request.form["long"]
+    db.defineLocation(id, lat, long)
+    return loggedUser(id)
 
 if __name__ == '__main__':
     app.run()

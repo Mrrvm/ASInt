@@ -31,7 +31,7 @@ class appDB:
         mydoc = mycol.count(myquery)
         print(mydoc)
         if mydoc is 0:
-            mydict = {"id": u_id, "lat": lat,"long": long, "name" : name, "photo" : photo}
+            mydict = {"id": u_id, "lat": lat, "long": long, "name": name, "photo": photo}
             res = mycol.insert_one(mydict)
         else:
             pass
@@ -40,8 +40,13 @@ class appDB:
         mycol = self.database["users"]
         myquery = {"id": id}
         mydoc = mycol.find(myquery)
-        print(mydoc[0])
         return mydoc[0]
+
+    def defineLocation(self, id, lat, long):
+        mycol = self.database["users"]
+        myquery = {"id": id}
+        mydoc = mycol.find(myquery)
+        #mycol.update({ id: "id" }, {$set: { "lat": lat, "long": long}})
 
     def showAllUsers(self):
         return list(self.users.values())
