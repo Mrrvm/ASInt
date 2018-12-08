@@ -23,7 +23,7 @@ DEFAULT_LONG = -9.14
 @app.route('/admin/buildings', methods=['GET'])
 def showBuildings():
     buildings = db.showAllBuildings()
-    return jsonify([ob.__dict__ for ob in buildings])
+    return jsonify(buildings)
 
 @app.route('/admin/buildings/add', methods=['POST'])
 def addBuilding():
@@ -34,7 +34,7 @@ def addBuilding():
     if b_name == None or b_id == None or b_lat == None or b_long == None:
         pass
     else:
-        db.addBuilding(b_name, int(b_lat), int(b_long), int(b_id))
+        db.addBuilding(b_name, b_lat, b_long, b_id)
         return '', 204
 
 @app.route('/admin/buildings/remove', methods=['POST'])
@@ -48,20 +48,20 @@ def removeBuilding():
 
 @app.route('/admin/buildings/<id>', methods=['GET'])
 def single_building(id):
-    building = db.showBuilding(int(id))
-    return jsonify(building.__dict__)
+    building = db.showBuilding(id)
+    return jsonify(building)
 
 
 @app.route('/admin/users', methods=['GET'])
 def showUsers():
     users = db.showAllUsers()
-    return jsonify([ob.__dict__ for ob in users])
+    return jsonify(users)
 
 
 @app.route('/admin/users/<id>', methods=['GET'])
 def single_user(id):
-    user = db.showUser(str(id))
-    return jsonify(user.__dict__)
+    user = db.getUser(id)
+    return jsonify(user)
 
 
 @app.route('/users/login', methods=['GET'])
@@ -84,7 +84,7 @@ def authUser():
     u_id = request_info.json()['username']
     u_name = request_info.json()['name']
     u_photo = request_info.json()['photo']
-    db.addUser(str(u_id), DEFAULT_LAT, DEFAULT_LONG, str(u_name), str(u_photo['data']))
+    db.addUser(u_id, DEFAULT_LAT, DEFAULT_LONG, u_name, u_photo['data'])
     return redirect(url_for('loggedUser', id=u_id))
 
 @app.route('/home/')
@@ -94,7 +94,7 @@ def homeUser():
 @app.route('/user/<id>')
 def loggedUser(id):
     # TODO check if user is actually logged
-    u_data = db.getUser(id)
+    u_data = db.getUser(id)[0]
     u_name = u_data['name']
     u_photo = u_data['photo']
     u_lat = u_data['lat']
