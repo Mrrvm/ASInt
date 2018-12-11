@@ -34,9 +34,9 @@ class appDB:
         return list(self.buildings.find({"id": id},{ "_id": 0}))
 
     def addUser(self, u_id, lat, long, u_name, u_photo):
-        #self.users[u_id] = User.User(u_id, lat, long)
-        new_user = {"id": u_id, "lat": lat,"long": long, "name": u_name, "photo": u_photo}
-        x = self.users.insert_one(new_user)
+        if not list(self.users.find({"id": u_id})):
+            new_user = {"id": u_id, "lat": lat,"long": long, "name": u_name, "photo": u_photo}
+            self.users.insert_one(new_user)
 
     def getUser(self, id):
         return list(self.users.find({"id": id}, {"_id": 0}))
@@ -45,8 +45,8 @@ class appDB:
         #mycol = self.database["users"]
         #myquery = {"id": id}
         #mydoc = mycol.find(myquery)
-        # mycol.update({ id: "id" }, {$set: { "lat": lat, "long": long}})
-        pass
+        self.users.update_many({ "id": id }, {"$set": { "lat": lat, "long": long}})
+
 
     def showAllUsers(self):
         return list(self.users.find({},{ "_id": 0}))

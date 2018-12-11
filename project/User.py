@@ -9,3 +9,5 @@ class User:
     def __str__(self):
         return "%s - %f - %f" % (self.id, self.lat, self.long, self.name)
 
+    #log = {"user": pode ser null, "building": pode ser null, "data": xpto}
+

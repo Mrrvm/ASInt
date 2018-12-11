@@ -17,8 +17,8 @@ FenixEdu_ClientId = "1695915081465915"
 FenixEdu_redirectURL = "http://127.0.0.1:5000/users/auth"
 FenixEdu_ClientSecret = "xCzg7GMrhRI5ncklUy+wN3fl6UOdjHKVhUlWWaT5Ibm/PTbS5TEkJsmt5F62IwTXnZ5xGcqeMeia7K021Mtm6g=="
 
-DEFAULT_LAT = 38.73
-DEFAULT_LONG = -9.14
+DEFAULT_LAT = "38.73"
+DEFAULT_LONG = "-9.14"
 
 @app.route('/admin/buildings', methods=['GET'])
 def showBuildings():
