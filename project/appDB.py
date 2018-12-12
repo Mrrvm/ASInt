@@ -3,6 +3,8 @@ import User
 
 import pymongo
 
+building_range = 100.00
+
 class appDB:
 
     def __init__(self):
@@ -38,6 +40,9 @@ class appDB:
             new_user = {"id": u_id, "lat": lat,"long": long, "name": u_name, "photo": u_photo}
             self.users.insert_one(new_user)
 
+    def showUser(self, id):
+        return list(self.users.find({"id": id}, {"_id": 0, "photo": 0}))
+
     def getUser(self, id):
         return list(self.users.find({"id": id}, {"_id": 0}))
 
@@ -49,7 +54,7 @@ class appDB:
 
 
     def showAllUsers(self):
-        return list(self.users.find({},{ "_id": 0}))
+        return list(self.users.find({},{ "_id": 0, "photo": 0}))
 
 
     def getUsersKeys(self, id):

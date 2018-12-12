@@ -20,47 +20,79 @@ FenixEdu_ClientSecret = "xCzg7GMrhRI5ncklUy+wN3fl6UOdjHKVhUlWWaT5Ibm/PTbS5TEkJsm
 DEFAULT_LAT = "38.73"
 DEFAULT_LONG = "-9.14"
 
-@app.route('/admin/buildings', methods=['GET'])
+admin_login = {"username": "admin", "password": "123", "key": "1M4KAH19PO"}
+
+
+@app.route('/admin/login', methods=['POST'])
+def adminLogin():
+    username = request.json["username"]
+    password = request.json["password"]
+    if username == admin_login['username'] and password == admin_login['password']:
+        return jsonify({"status": "logged successfully", "key": admin_login['key']})
+    else:
+        return jsonify({"status": "error during login"})
+
+@app.route('/admin/buildings', methods=['POST'])
 def showBuildings():
-    buildings = db.showAllBuildings()
-    return jsonify(buildings)
+    admin_key = request.json["key"]
+    if admin_key != admin_login['key']:
+        return jsonify({"status": "not logged in"})
+    else:
+        buildings = db.showAllBuildings()
+        return jsonify(buildings)
 
 @app.route('/admin/buildings/add', methods=['POST'])
 def addBuilding():
-    b_name = request.json["name"]
-    b_id = request.json["id"]
-    b_lat = request.json["lat"]
-    b_long = request.json["long"]
-    if b_name == None or b_id == None or b_lat == None or b_long == None:
-        pass
+    admin_key = request.json["key"]
+    if admin_key != admin_login['key']:
+        return jsonify({"status": "not logged in"})
     else:
-        db.addBuilding(b_name, b_lat, b_long, b_id)
-        return '', 204
+        b_name = request.json["name"]
+        b_id = request.json["id"]
+        b_lat = request.json["lat"]
+        b_long = request.json["long"]
+        if b_name == None or b_id == None or b_lat == None or b_long == None:
+            pass
+        else:
+            db.addBuilding(b_name, b_lat, b_long, b_id)
+            return '', 204
 
 @app.route('/admin/buildings/remove', methods=['POST'])
 def removeBuilding():
-    b_id = request.form["id"]
-    if b_id == None:
-        pass
+    admin_key = request.json["key"]
+    if admin_key != admin_login['key']:
+        return jsonify({"status": "not logged in"})
     else:
-        db.removeBuilding(int(b_id))
-        return '', 204
+        b_id = request.json["id"]
+        if b_id == None:
+            pass
+        else:
+            db.removeBuilding(b_id)
+            return '', 204
 
-@app.route('/admin/buildings/<id>', methods=['GET'])
+@app.route('/admin/buildings/<id>', methods=['POST'])
 def single_building(id):
-    building = db.showBuilding(id)
-    return jsonify(building)
+    admin_key = request.json["key"]
+    if admin_key != admin_login['key']:
+        return jsonify({"status": "not logged in"})
+    else:
+        building = db.showBuilding(id)
+        return jsonify(building)
 
 
-@app.route('/admin/users', methods=['GET'])
+@app.route('/admin/users', methods=['POST'])
 def showUsers():
-    users = db.showAllUsers()
-    return jsonify(users)
+    admin_key = request.json["key"]
+    if admin_key != admin_login['key']:
+        return jsonify({"status": "not logged in"})
+    else:
+        users = db.showAllUsers()
+        return jsonify(users)
 
 
-@app.route('/admin/users/<id>', methods=['GET'])
+@app.route('/admin/users/<id>', methods=['POST'])
 def single_user(id):
-    user = db.getUser(id)
+    user = db.showUser(id)
     return jsonify(user)
 
 
