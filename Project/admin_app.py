@@ -26,12 +26,12 @@ def buildings(endpoint, key):
         r = requests.post(endpoint + "/add", json=ToSend)
     elif command.upper() == "LISTALL":
         ToSend = {'key': key}
-        r = requests.post(endpoint, json=ToSend)
+        r = requests.get(endpoint, json=ToSend)
         print(r.json())
     elif command.upper() == "SHOWBUILDING":
         b_id = input("Building id: ")
         ToSend = {'key': key}
-        r = requests.post(endpoint + "/" + b_id, json=ToSend)
+        r = requests.get(endpoint + "/" + b_id, json=ToSend)
         print(r.json())
     elif command.upper() == "REMOVEBUILDING":
         b_id = input("Building id: ")
@@ -44,17 +44,17 @@ def users(endpoint, key):
     command = input("ListAll  ShowUser:\n")
     if command.upper() == "LISTALL":
         ToSend = {'key': key}
-        r = requests.post(endpoint, json=ToSend)
+        r = requests.get(endpoint, json=ToSend)
         user_list = r.json()
         for u in user_list:
             print("ID: " + u['id'] + " Name: " + u['name'])
     elif command.upper() == "SHOWUSER":
         u_id = input("User id: ")
         ToSend = {'key': key}
-        r = requests.post(endpoint + "/" + u_id, json=ToSend)
+        r = requests.get(endpoint + "/" + u_id, json=ToSend)
         user = r.json()
         for key, val in user[0].items():
-            print(key + ": " + val)
+            print(key + ": " + str(val))
 
 
 if __name__ == '__main__':

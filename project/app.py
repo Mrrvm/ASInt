@@ -32,7 +32,7 @@ def adminLogin():
     else:
         return jsonify({"status": "error during login"})
 
-@app.route('/admin/buildings', methods=['POST'])
+@app.route('/admin/buildings', methods=['GET'])
 def showBuildings():
     admin_key = request.json["key"]
     if admin_key != admin_login['key']:
@@ -70,7 +70,7 @@ def removeBuilding():
             db.removeBuilding(b_id)
             return '', 204
 
-@app.route('/admin/buildings/<id>', methods=['POST'])
+@app.route('/admin/buildings/<id>', methods=['GET'])
 def single_building(id):
     admin_key = request.json["key"]
     if admin_key != admin_login['key']:
@@ -80,7 +80,7 @@ def single_building(id):
         return jsonify(building)
 
 
-@app.route('/admin/users', methods=['POST'])
+@app.route('/admin/users', methods=['GET'])
 def showUsers():
     admin_key = request.json["key"]
     if admin_key != admin_login['key']:
@@ -90,10 +90,14 @@ def showUsers():
         return jsonify(users)
 
 
-@app.route('/admin/users/<id>', methods=['POST'])
+@app.route('/admin/users/<id>', methods=['GET'])
 def single_user(id):
-    user = db.showUser(id)
-    return jsonify(user)
+    admin_key = request.json["key"]
+    if admin_key != admin_login['key']:
+        return jsonify({"status": "not logged in"})
+    else:
+        user = db.showUser(id)
+        return jsonify(user)
 
 
 @app.route('/users/login', methods=['GET'])
