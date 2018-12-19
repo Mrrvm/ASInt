@@ -3,6 +3,8 @@ import User
 
 import pymongo
 
+building_range = 100.00
+
 class appDB:
 
     def __init__(self):
@@ -20,10 +22,10 @@ class appDB:
 
     def removeBuilding(self, b_id):
         #self.buildings.pop(b_id, None)
-        print(b_id)
+        # print(b_id)
         x = self.buildings.delete_one({"id": b_id})
-        print(x.deleted_count, " documents deleted.")
-        print(list(self.buildings.find({"id": b_id})))
+        # print(x.deleted_count, " documents deleted.")
+        # print(list(self.buildings.find({"id": b_id})))
 
     def showAllBuildings(self):
         #return list(self.buildings.values())
@@ -33,16 +35,27 @@ class appDB:
         #return self.buildings[id]
         return list(self.buildings.find({"id": id},{ "_id": 0}))
 
-    def addUser(self, u_id, lat, long):
-        self.users[u_id] = User.User(u_id, lat, long)
-        new_user = {"id": u_id, "lat": lat,"long": long}
-        x = self.users.insert_one(new_user)
-
-    def showAllUsers(self):
-        return list(self.users.values())
+    def addUser(self, u_id, lat, long, u_name, u_photo):
+        if not list(self.users.find({"id": u_id})):
+            new_user = {"id": u_id, "lat": lat,"long": long, "name": u_name, "photo": u_photo}
+            self.users.insert_one(new_user)
 
     def showUser(self, id):
-        return self.users[id]
+        return list(self.users.find({"id": id}, {"_id": 0, "photo": 0}))
+
+    def getUser(self, id):
+        return list(self.users.find({"id": id}, {"_id": 0}))
+
+    def defineLocation(self, id, lat, long):
+        #mycol = self.database["users"]
+        #myquery = {"id": id}
+        #mydoc = mycol.find(myquery)
+        self.users.update_many({ "id": id }, {"$set": { "lat": lat, "long": long}})
+
+
+    def showAllUsers(self):
+        return list(self.users.find({},{ "_id": 0, "photo": 0}))
+
 
     def getUsersKeys(self, id):
         return self.users.keys()
