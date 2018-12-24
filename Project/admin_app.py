@@ -53,7 +53,7 @@ def users(endpoint, key):
         ToSend = {'key': key}
         r = requests.get(endpoint + "/" + u_id, json=ToSend)
         user = r.json()
-        for key, val in user[0].items():
+        for key, val in user.items():
             print(key + ": " + str(val))
 
 

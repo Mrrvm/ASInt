@@ -2,6 +2,7 @@ import Building
 import User
 
 import pymongo
+from bson.son import SON
 
 building_range = 100.00
 
@@ -15,10 +16,12 @@ class appDB:
         self.database = client["chatist"]
         self.users = self.database["users"]
         self.buildings = self.database["buildings"]
+        self.buildings.create_index([("location", pymongo.GEOSPHERE)])
+        self.users.create_index([("location", pymongo.GEOSPHERE)])
 
     def addBuilding(self, name, lat, long, b_id):
         #self.buildings[b_id] = Building.Building(name, lat, long, b_id)
-        x = self.buildings.insert_one({"id": b_id, "name": name, "lat": lat, "long": long})
+        x = self.buildings.insert_one({"id": b_id, "name": name, "location": {"type": "Point", "coordinates": [float(long), float(lat)]}})
 
     def removeBuilding(self, b_id):
         #self.buildings.pop(b_id, None)
@@ -29,19 +32,37 @@ class appDB:
 
     def showAllBuildings(self):
         #return list(self.buildings.values())
-        return list(self.buildings.find({},{ "_id": 0}))
+        return list(self.buildings.find({},{ "_id": 0, "location": 0}))
 
     def showBuilding(self, id):
         #return self.buildings[id]
         return list(self.buildings.find({"id": id},{ "_id": 0}))
 
-    def addUser(self, u_id, lat, long, u_name, u_photo):
+    def insideBuilding(self, u_id):
+        #return self.buildings[id]
+        user_location = list(self.users.find({"id": u_id}, {"location": 1, "range": 1}))[0]
+        lat_ = user_location['location']['coordinates'][1]
+        long_ = user_location['location']['coordinates'][0]
+        #query = {'location': {'$near': SON([('$geometry', SON([('type', 'Point'), ('coordinates', [float(long_), float(lat_)])])),
+        #                               ('$maxDistance', float(building_range))])}}
+        query = {'location': {
+            '$near': SON([('$geometry', SON([('type', 'Point'), ('coordinates', [float(long_), float(lat_)])])),
+                          ('$maxDistance', float(building_range))])}}
+        #return without location as it's likely unnecessary
+        return list(self.buildings.find(query,{ "_id": 0, "location": 0}))
+
+
+    def addUser(self, u_id, lat, long, u_range, u_name, u_photo):
         if not list(self.users.find({"id": u_id})):
-            new_user = {"id": u_id, "lat": lat,"long": long, "name": u_name, "photo": u_photo}
+            new_user = {"id": u_id, "name": u_name, "photo": u_photo, "range": u_range, "location": {"type": "Point", "coordinates": [float(long), float(lat)]}}
             self.users.insert_one(new_user)
 
     def showUser(self, id):
-        return list(self.users.find({"id": id}, {"_id": 0, "photo": 0}))
+        user_data = list(self.users.find({"id": id}, {"_id": 0, "photo": 0}))[0]
+        user_data['latitude'] = user_data['location']['coordinates'][1]
+        user_data['longitude'] = user_data['location']['coordinates'][0]
+        user_data.pop('location', None)
+        return user_data
 
     def getUser(self, id):
         return list(self.users.find({"id": id}, {"_id": 0}))
@@ -50,12 +71,26 @@ class appDB:
         #mycol = self.database["users"]
         #myquery = {"id": id}
         #mydoc = mycol.find(myquery)
-        self.users.update_many({ "id": id }, {"$set": { "lat": lat, "long": long}})
+        #self.users.update_many({ "id": id }, {"$set": { "lat": lat, "long": long}})
+        self.users.update_many({"id": id}, {"$set": {"location": {"type": "Point", "coordinates": [float(long), float(lat)]}}})
 
 
     def showAllUsers(self):
-        return list(self.users.find({},{ "_id": 0, "photo": 0}))
+        return list(self.users.find({},{ "_id": 0, "photo": 0, "location": 0, "range": 0}))
 
 
     def getUsersKeys(self, id):
         return self.users.keys()
+
+    def nearbyUsers(self, u_id):
+        #return self.buildings[id]
+        user_location = list(self.users.find({"id": u_id}, {"location": 1, "range": 1}))[0]
+        lat_ = user_location['location']['coordinates'][1]
+        long_ = user_location['location']['coordinates'][0]
+        range_ = user_location['range']
+        query = {'location': {'$near': SON([('$geometry', SON([('type', 'Point'), ('coordinates', [float(long_), float(lat_)])])),
+                                       ('$maxDistance', float(range_))])}}
+        #return without location as it's likely unnecessary
+        return list(self.users.find(query,{ "_id": 0, "location": 0, "range": 0, "photo": 0}))
+
+    #, 'id': {'$not': u_id}

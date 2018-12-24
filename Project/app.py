@@ -19,6 +19,7 @@ FenixEdu_ClientSecret = "xCzg7GMrhRI5ncklUy+wN3fl6UOdjHKVhUlWWaT5Ibm/PTbS5TEkJsm
 
 DEFAULT_LAT = "38.73"
 DEFAULT_LONG = "-9.14"
+DEFAULT_RANGE = "10"
 
 admin_login = {"username": "admin", "password": "123", "key": "1M4KAH19PO"}
 
@@ -120,7 +121,7 @@ def authUser():
     u_id = request_info.json()['username']
     u_name = request_info.json()['name']
     u_photo = request_info.json()['photo']
-    db.addUser(u_id, DEFAULT_LAT, DEFAULT_LONG, u_name, u_photo['data'])
+    db.addUser(u_id, DEFAULT_LAT, DEFAULT_LONG, DEFAULT_RANGE, u_name, u_photo['data'])
     return redirect(url_for('loggedUser', id=u_id))
 
 @app.route('/home/')
@@ -133,15 +134,33 @@ def loggedUser(id):
     u_data = db.getUser(id)[0]
     u_name = u_data['name']
     u_photo = u_data['photo']
-    u_lat = u_data['lat']
-    u_long = u_data['long']
+    u_location = u_data['location']
+    u_lat = u_location['coordinates'][1]
+    u_long = u_location['coordinates'][0]
     return render_template("user.html", name=u_name, photo=u_photo, userid=id, lat=u_lat, long=u_long)
+
 
 @app.route('/user/<id>/location', methods=['POST'])
 def defineLocation(id):
     lat = request.form["lat"]
     long = request.form["long"]
     db.defineLocation(id, lat, long)
+    return loggedUser(id)
+
+
+@app.route('/user/<id>/nearby', methods=['GET'])
+def nearbyUsers(id):
+    nearby = db.nearbyUsers(id)
+    print(nearby)
+    # do something with building list
+    return loggedUser(id)
+
+
+@app.route('/user/<id>/buildings', methods=['GET'])
+def insideBuilding(id):
+    buildings = db.insideBuilding(id)
+    print(buildings)
+    # do something with building list
     return loggedUser(id)
 
 if __name__ == '__main__':
