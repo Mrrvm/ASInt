@@ -89,7 +89,7 @@ class appDB:
         long_ = user_location['location']['coordinates'][0]
         range_ = user_location['range']
         query = {'location': {'$near': SON([('$geometry', SON([('type', 'Point'), ('coordinates', [float(long_), float(lat_)])])),
-                                       ('$maxDistance', float(range_))])}}
+                                       ('$maxDistance', float(range_))])}, 'id': { '$ne': u_id } }
         #return without location as it's likely unnecessary
         return list(self.users.find(query,{ "_id": 0, "location": 0, "range": 0, "photo": 0}))
 
