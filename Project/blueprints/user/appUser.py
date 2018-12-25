@@ -101,7 +101,7 @@ def defineLocation(id):
 def nearbyUsers(id):
     nearby = db.nearbyUsers(id)
     print(nearby)
-    # do something with building list
+    #TODO: show user
     return redirect(url_for('appUser.loggedUser', id=id))
 
 
@@ -109,5 +109,7 @@ def nearbyUsers(id):
 def insideBuilding(id):
     buildings = db.insideBuilding(id)
     print(buildings)
-    # do something with building list
+    # TODO: show user
     return redirect(url_for('appUser.loggedUser', id=id))
+
+# TODO: send messages

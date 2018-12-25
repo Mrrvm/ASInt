@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7064f490-ea6a-4fe1-adf5-b7cffe6df2cc" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Building.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/User.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/appDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/appDB.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blueprints/admin/appAdmin.py" beforeDir="false" afterPath="$PROJECT_DIR$/blueprints/admin/appAdmin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blueprints/user/appUser.py" beforeDir="false" afterPath="$PROJECT_DIR$/blueprints/user/appUser.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -87,7 +83,7 @@
           <entry key="css" value="193" />
           <entry key="dummy" value="48" />
           <entry key="html" value="354" />
-          <entry key="py" value="1646" />
+          <entry key="py" value="1690" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
@@ -95,7 +91,7 @@
           <entry key="CSS" value="193" />
           <entry key="HTML" value="354" />
           <entry key="PLAIN_TEXT" value="48" />
-          <entry key="Python" value="1646" />
+          <entry key="Python" value="1690" />
         </counts>
       </usages-collector>
     </session>
@@ -135,11 +131,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/blueprints/user/appUser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="30" column="1" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="1" />
+            <state relative-caret-position="668">
+              <caret line="114" column="21" selection-start-line="114" selection-start-column="21" selection-end-line="114" selection-end-column="21" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
               </folding>
@@ -168,10 +164,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/appDB.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="494">
+            <state relative-caret-position="1900">
               <caret line="76" column="22" selection-start-line="76" selection-start-column="22" selection-end-line="76" selection-end-column="22" />
               <folding>
                 <element signature="e#1#15#0" expanded="true" />
@@ -218,9 +214,9 @@
         <option value="$PROJECT_DIR$/blueprints/user/templates/home.html" />
         <option value="$PROJECT_DIR$/blueprints/user/templates/user.html" />
         <option value="$PROJECT_DIR$/interfaceAdmin.py" />
-        <option value="$PROJECT_DIR$/blueprints/user/appUser.py" />
         <option value="$PROJECT_DIR$/blueprints/admin/appAdmin.py" />
         <option value="$PROJECT_DIR$/appDB.py" />
+        <option value="$PROJECT_DIR$/blueprints/user/appUser.py" />
       </list>
     </option>
   </component>
@@ -455,6 +451,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/interfaceAdmin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-181">
+          <caret line="40" column="33" selection-start-line="40" selection-start-column="33" selection-end-line="40" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/appDB.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1900">
+          <caret line="76" column="22" selection-start-line="76" selection-start-column="22" selection-end-line="76" selection-end-column="22" />
+          <folding>
+            <element signature="e#1#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/blueprints/admin/appAdmin.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
@@ -465,29 +478,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/interfaceAdmin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-181">
-          <caret line="40" column="33" selection-start-line="40" selection-start-column="33" selection-end-line="40" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blueprints/user/appUser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="30" column="1" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="1" />
+        <state relative-caret-position="668">
+          <caret line="114" column="21" selection-start-line="114" selection-start-column="21" selection-end-line="114" selection-end-column="21" />
           <folding>
             <element signature="e#0#27#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/appDB.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="494">
-          <caret line="76" column="22" selection-start-line="76" selection-start-column="22" selection-end-line="76" selection-end-column="22" />
-          <folding>
-            <element signature="e#1#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
