@@ -1,3 +1,16 @@
+"""
+appUser.py
+Contains the following user routes
+/
+/home
+/user/login
+/users/auth
+/user/<id>
+/user/<id>/location
+/user/<id>/nearby
+/user/<id>/buildings
+"""
+
 from flask import Blueprint
 from flask import render_template
 from flask import request

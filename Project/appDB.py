@@ -1,6 +1,3 @@
-import Building
-import User
-
 import pymongo
 from bson.son import SON
 
@@ -16,6 +13,10 @@ class appDB:
         self.buildings = self.database["buildings"]
         self.buildings.create_index([("location", pymongo.GEOSPHERE)])
         self.users.create_index([("location", pymongo.GEOSPHERE)])
+
+    ##########################################
+    # Admin database operations
+    ##########################################
 
     def addBuilding(self, name, lat, long, b_id):
         self.buildings.insert_one({"id": b_id, "name": name, "location": {"type": "Point", "coordinates": [float(long), float(lat)]}})
@@ -43,11 +44,8 @@ class appDB:
         #return without location as it's likely unnecessary
         return list(self.buildings.find(query,{ "_id": 0, "location": 0}))
 
-
-    def addUser(self, u_id, lat, long, u_range, u_name, u_photo):
-        if not list(self.users.find({"id": u_id})):
-            new_user = {"id": u_id, "name": u_name, "photo": u_photo, "range": u_range, "location": {"type": "Point", "coordinates": [float(long), float(lat)]}}
-            self.users.insert_one(new_user)
+    def showAllUsers(self):
+        return list(self.users.find({},{ "_id": 0, "photo": 0, "location": 0, "range": 0}))
 
     def showUser(self, id):
         user_data = list(self.users.find({"id": id}, {"_id": 0, "photo": 0}))[0]
@@ -56,19 +54,23 @@ class appDB:
         user_data.pop('location', None)
         return user_data
 
+    ##########################################
+    # User database operations
+    ##########################################
+
+    def addUser(self, u_id, lat, long, u_range, u_name, u_photo):
+        if not list(self.users.find({"id": u_id})):
+            new_user = {"id": u_id, "name": u_name, "photo": u_photo, "range": u_range, "location": {"type": "Point", "coordinates": [float(long), float(lat)]}}
+            self.users.insert_one(new_user)
+
     def getUser(self, id):
         return list(self.users.find({"id": id}, {"_id": 0}))
 
     def defineLocation(self, id, lat, long):
         self.users.update_many({"id": id}, {"$set": {"location": {"type": "Point", "coordinates": [float(long), float(lat)]}}})
 
-
-    def showAllUsers(self):
-        return list(self.users.find({},{ "_id": 0, "photo": 0, "location": 0, "range": 0}))
-
-
     def getUsersKeys(self, id):
-        return self.users.keys()
+        return self.users.keys() #TODO : what is this for?
 
     def nearbyUsers(self, u_id):
         user_location = list(self.users.find({"id": u_id}, {"location": 1, "range": 1}))[0]
