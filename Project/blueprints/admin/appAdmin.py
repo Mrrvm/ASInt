@@ -68,8 +68,6 @@ def single_building(id):
         return jsonify({"status": "not logged in"})
     else:
         building = db.showBuilding(id)
-        print(building)
-        print(jsonify(building))
         return jsonify(building)
 
 

@@ -2,22 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7064f490-ea6a-4fe1-adf5-b7cffe6df2cc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/blueprints/admin/appAdmin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blueprints/user/appUser.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/interfaceAdmin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projecto-v1.0.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/carloscat.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/blueprints/user/static/carloscat.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/carloscat_grey.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/blueprints/user/static/carloscat_grey.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/logo.ico" beforeDir="false" afterPath="$PROJECT_DIR$/blueprints/user/static/logo.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/blueprints/user/static/logo.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/love.png" beforeDir="false" afterPath="$PROJECT_DIR$/blueprints/user/static/love.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/mycat.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/blueprints/user/static/mycat.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/mycat_grey.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/blueprints/user/static/mycat_grey.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/blueprints/user/static/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/blueprints/user/templates/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user.html" beforeDir="false" afterPath="$PROJECT_DIR$/blueprints/user/templates/user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/appDB.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blueprints/admin/appAdmin.py" beforeDir="false" afterPath="$PROJECT_DIR$/blueprints/admin/appAdmin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blueprints/user/appUser.py" beforeDir="false" afterPath="$PROJECT_DIR$/blueprints/user/appUser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaceAdmin.py" beforeDir="false" afterPath="$PROJECT_DIR$/interfaceAdmin.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,8 +15,8 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Project$admin_app.coverage" NAME="admin_app Coverage Results" MODIFIED="1545757412407" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Project$app.coverage" NAME="app Coverage Results" MODIFIED="1545757398673" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Project$admin_app.coverage" NAME="admin_app Coverage Results" MODIFIED="1545758336703" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Project$app.coverage" NAME="app Coverage Results" MODIFIED="1545758338997" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/project$project.coverage" NAME="project Coverage Results" MODIFIED="1544547993941" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Project$project.coverage" NAME="project Coverage Results" MODIFIED="1545222871834" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
@@ -98,7 +87,7 @@
           <entry key="css" value="193" />
           <entry key="dummy" value="48" />
           <entry key="html" value="354" />
-          <entry key="py" value="1105" />
+          <entry key="py" value="1164" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
@@ -106,7 +95,7 @@
           <entry key="CSS" value="193" />
           <entry key="HTML" value="354" />
           <entry key="PLAIN_TEXT" value="48" />
-          <entry key="Python" value="1105" />
+          <entry key="Python" value="1164" />
         </counts>
       </usages-collector>
     </session>
@@ -125,11 +114,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/blueprints/admin/appAdmin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="500">
-              <caret line="71" column="31" selection-start-line="71" selection-start-column="31" selection-end-line="71" selection-end-column="31" />
+            <state relative-caret-position="344">
+              <caret line="64" column="24" lean-forward="true" selection-start-line="64" selection-start-column="24" selection-end-line="64" selection-end-column="24" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
               </folding>
@@ -137,11 +126,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/interfaceAdmin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="325">
-              <caret line="28" column="31" lean-forward="true" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
+            <state relative-caret-position="475">
+              <caret line="40" column="33" selection-start-line="40" selection-start-column="33" selection-end-line="40" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -149,8 +138,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/blueprints/user/appUser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2075">
-              <caret line="83" column="57" selection-start-line="83" selection-start-column="57" selection-end-line="83" selection-end-column="57" />
+            <state relative-caret-position="300">
+              <caret line="75" column="58" lean-forward="true" selection-start-line="75" selection-start-column="58" selection-end-line="75" selection-end-column="58" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
               </folding>
@@ -182,8 +171,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/appDB.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="12" selection-start-column="12" selection-end-column="12" />
+            <state relative-caret-position="225">
+              <caret line="33" column="21" selection-start-line="33" selection-start-column="21" selection-end-line="33" selection-end-column="21" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -217,7 +209,6 @@
         <option value="$PROJECT_DIR$/admin_app.py" />
         <option value="$PROJECT_DIR$/static/styles.css" />
         <option value="$PROJECT_DIR$/templates/user.html" />
-        <option value="$PROJECT_DIR$/appDB.py" />
         <option value="$PROJECT_DIR$/templates/home.html" />
         <option value="$PROJECT_DIR$/User.py" />
         <option value="$PROJECT_DIR$/appUser.py" />
@@ -226,8 +217,9 @@
         <option value="$PROJECT_DIR$/blueprints/user/templates/home.html" />
         <option value="$PROJECT_DIR$/blueprints/user/templates/user.html" />
         <option value="$PROJECT_DIR$/blueprints/user/appUser.py" />
-        <option value="$PROJECT_DIR$/interfaceAdmin.py" />
         <option value="$PROJECT_DIR$/blueprints/admin/appAdmin.py" />
+        <option value="$PROJECT_DIR$/appDB.py" />
+        <option value="$PROJECT_DIR$/interfaceAdmin.py" />
       </list>
     </option>
   </component>
@@ -312,7 +304,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.admin_app">
+  <component name="RunManager" selected="Python.app">
     <configuration name="admin_app" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -379,8 +371,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.admin_app" />
         <item itemvalue="Python.app" />
+        <item itemvalue="Python.admin_app" />
       </list>
     </recent_temporary>
   </component>
@@ -399,13 +391,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="45" width="2562" height="1396" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10914928" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3294893" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3088962" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.24217463" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -481,8 +474,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/blueprints/user/appUser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2075">
-          <caret line="83" column="57" selection-start-line="83" selection-start-column="57" selection-end-line="83" selection-end-column="57" />
+        <state relative-caret-position="300">
+          <caret line="75" column="58" lean-forward="true" selection-start-line="75" selection-start-column="58" selection-end-line="75" selection-end-column="58" />
           <folding>
             <element signature="e#0#27#0" expanded="true" />
           </folding>
@@ -491,25 +484,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/appDB.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="12" selection-start-column="12" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/interfaceAdmin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="28" column="31" lean-forward="true" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
+        <state relative-caret-position="225">
+          <caret line="33" column="21" selection-start-line="33" selection-start-column="21" selection-end-line="33" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/blueprints/admin/appAdmin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="71" column="31" selection-start-line="71" selection-start-column="31" selection-end-line="71" selection-end-column="31" />
+        <state relative-caret-position="344">
+          <caret line="64" column="24" lean-forward="true" selection-start-line="64" selection-start-column="24" selection-end-line="64" selection-end-column="24" />
           <folding>
             <element signature="e#0#27#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/interfaceAdmin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="40" column="33" selection-start-line="40" selection-start-column="33" selection-end-line="40" selection-end-column="33" />
         </state>
       </provider>
     </entry>

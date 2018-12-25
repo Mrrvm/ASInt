@@ -9,8 +9,6 @@ building_range = 100.00
 class appDB:
 
     def __init__(self):
-        #self.buildings = {}
-        #self.users = {}
         cluster_url = "mongodb://carlos:12345678q.@clusterasint-shard-00-00-nk7xs.gcp.mongodb.net:27017,clusterasint-shard-00-01-nk7xs.gcp.mongodb.net:27017,clusterasint-shard-00-02-nk7xs.gcp.mongodb.net:27017/test?ssl=true&replicaSet=ClusterASInt-shard-0&authSource=admin&retryWrites=true"
         client = pymongo.MongoClient(cluster_url)
         self.database = client["chatist"]
@@ -20,31 +18,25 @@ class appDB:
         self.users.create_index([("location", pymongo.GEOSPHERE)])
 
     def addBuilding(self, name, lat, long, b_id):
-        #self.buildings[b_id] = Building.Building(name, lat, long, b_id)
-        x = self.buildings.insert_one({"id": b_id, "name": name, "location": {"type": "Point", "coordinates": [float(long), float(lat)]}})
+        self.buildings.insert_one({"id": b_id, "name": name, "location": {"type": "Point", "coordinates": [float(long), float(lat)]}})
 
     def removeBuilding(self, b_id):
-        #self.buildings.pop(b_id, None)
-        # print(b_id)
-        x = self.buildings.delete_one({"id": b_id})
-        # print(x.deleted_count, " documents deleted.")
-        # print(list(self.buildings.find({"id": b_id})))
+        self.buildings.delete_one({"id": b_id})
 
     def showAllBuildings(self):
-        #return list(self.buildings.values())
         return list(self.buildings.find({},{ "_id": 0, "location": 0}))
 
     def showBuilding(self, id):
-        #return self.buildings[id]
-        return list(self.buildings.find({"id": id},{ "_id": 0}))
+        b_data = list(self.buildings.find({"id": id},{ "_id": 0}))[0]
+        b_data['latitude'] = b_data['location']['coordinates'][1]
+        b_data['longitude'] = b_data['location']['coordinates'][0]
+        b_data.pop('location', None)
+        return b_data
 
     def insideBuilding(self, u_id):
-        #return self.buildings[id]
         user_location = list(self.users.find({"id": u_id}, {"location": 1, "range": 1}))[0]
         lat_ = user_location['location']['coordinates'][1]
         long_ = user_location['location']['coordinates'][0]
-        #query = {'location': {'$near': SON([('$geometry', SON([('type', 'Point'), ('coordinates', [float(long_), float(lat_)])])),
-        #                               ('$maxDistance', float(building_range))])}}
         query = {'location': {
             '$near': SON([('$geometry', SON([('type', 'Point'), ('coordinates', [float(long_), float(lat_)])])),
                           ('$maxDistance', float(building_range))])}}
@@ -68,10 +60,6 @@ class appDB:
         return list(self.users.find({"id": id}, {"_id": 0}))
 
     def defineLocation(self, id, lat, long):
-        #mycol = self.database["users"]
-        #myquery = {"id": id}
-        #mydoc = mycol.find(myquery)
-        #self.users.update_many({ "id": id }, {"$set": { "lat": lat, "long": long}})
         self.users.update_many({"id": id}, {"$set": {"location": {"type": "Point", "coordinates": [float(long), float(lat)]}}})
 
 
@@ -83,14 +71,13 @@ class appDB:
         return self.users.keys()
 
     def nearbyUsers(self, u_id):
-        #return self.buildings[id]
         user_location = list(self.users.find({"id": u_id}, {"location": 1, "range": 1}))[0]
         lat_ = user_location['location']['coordinates'][1]
         long_ = user_location['location']['coordinates'][0]
         range_ = user_location['range']
         query = {'location': {'$near': SON([('$geometry', SON([('type', 'Point'), ('coordinates', [float(long_), float(lat_)])])),
                                        ('$maxDistance', float(range_))])}, 'id': { '$ne': u_id } }
-        #return without location as it's likely unnecessary
+        # return without location as it's likely unnecessary
         return list(self.users.find(query,{ "_id": 0, "location": 0, "range": 0, "photo": 0}))
 
     #, 'id': {'$not': u_id}

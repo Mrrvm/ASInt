@@ -35,7 +35,8 @@ def buildings(endpoint, key):
         toSend = {'key': key}
         r = requests.get(endpoint + "/" + b_id, json=toSend)
         building = r.json()
-        print(building)
+        for key, val in building.items():
+            print(key + ": " + str(val))
     elif u_input == "4":
         b_id = input("Building id: ")
         toSend = {'id': b_id, 'key': key}

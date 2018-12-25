@@ -67,7 +67,7 @@ def loggedUser(id):
     print(payload['u_id'])
     if id != payload['u_id']:
         return redirect(url_for('appUser.homeUser'))
-    u_data = db.getUser(id)[0]
+    u_data = db.getUser(id)[0] #TODO: add cache here
     u_name = u_data['name']
     u_photo = u_data['photo']
     u_location = u_data['location']
