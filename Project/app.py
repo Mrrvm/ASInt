@@ -127,7 +127,7 @@ def authUser():
     u_photo = request_info.json()['photo']
     db.addUser(u_id, DEFAULT_LAT, DEFAULT_LONG, DEFAULT_RANGE, u_name, u_photo['data'])
     resp = make_response(redirect(url_for('loggedUser', id=u_id)))
-    u_token = jwt.encode({'user_id': u_id}, SECRET_KEY_USER, algorithm='HS256').decode('utf-8')
+    u_token = jwt.encode({'u_id': u_id}, SECRET_KEY_USER, algorithm='HS256').decode('utf-8')
     resp.set_cookie('token', u_token)
     return resp
 
@@ -138,8 +138,9 @@ def homeUser():
 @app.route('/user/<id>')
 def loggedUser(id):
     token = request.cookies.get('token')
-    print(token)
-    if id != jwt.decode(token, SECRET_KEY_USER, algorithms=['HS256']):
+    payload = jwt.decode(token, SECRET_KEY_USER, algorithms=['HS256'])
+    print(payload['u_id'])
+    if id != payload['u_id']:
         return redirect(url_for('homeUser'))
     u_data = db.getUser(id)[0]
     u_name = u_data['name']
