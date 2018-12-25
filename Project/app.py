@@ -1,11 +1,13 @@
 from flask import Flask
 from flask import render_template
 from flask import request
+from flask import make_response
 from flask import redirect
 from flask import jsonify
 from flask import url_for
 import requests
-
+import jwt
+import uuid
 import appDB
 import json
 
@@ -20,6 +22,8 @@ FenixEdu_ClientSecret = "xCzg7GMrhRI5ncklUy+wN3fl6UOdjHKVhUlWWaT5Ibm/PTbS5TEkJsm
 DEFAULT_LAT = "38.73"
 DEFAULT_LONG = "-9.14"
 DEFAULT_RANGE = "10"
+
+SECRET_KEY_USER = uuid.uuid4().hex
 
 admin_login = {"username": "admin", "password": "123", "key": "1M4KAH19PO"}
 
@@ -122,7 +126,10 @@ def authUser():
     u_name = request_info.json()['name']
     u_photo = request_info.json()['photo']
     db.addUser(u_id, DEFAULT_LAT, DEFAULT_LONG, DEFAULT_RANGE, u_name, u_photo['data'])
-    return redirect(url_for('loggedUser', id=u_id))
+    resp = make_response(redirect(url_for('loggedUser', id=u_id)))
+    u_token = jwt.encode({'user_id': u_id}, SECRET_KEY_USER, algorithm='HS256').decode('utf-8')
+    resp.set_cookie('token', u_token)
+    return resp
 
 @app.route('/home/')
 def homeUser():
@@ -130,7 +137,10 @@ def homeUser():
 
 @app.route('/user/<id>')
 def loggedUser(id):
-    # TODO check if user is actually logged
+    token = request.cookies.get('token')
+    print(token)
+    if id != jwt.decode(token, SECRET_KEY_USER, algorithms=['HS256']):
+        return redirect(url_for('homeUser'))
     u_data = db.getUser(id)[0]
     u_name = u_data['name']
     u_photo = u_data['photo']
@@ -145,7 +155,7 @@ def defineLocation(id):
     lat = request.form["lat"]
     long = request.form["long"]
     db.defineLocation(id, lat, long)
-    return loggedUser(id)
+    return redirect(url_for('loggedUser', id=id))
 
 
 @app.route('/user/<id>/nearby', methods=['GET'])
@@ -153,7 +163,7 @@ def nearbyUsers(id):
     nearby = db.nearbyUsers(id)
     print(nearby)
     # do something with building list
-    return loggedUser(id)
+    return redirect(url_for('loggedUser', id=id))
 
 
 @app.route('/user/<id>/buildings', methods=['GET'])
@@ -161,7 +171,7 @@ def insideBuilding(id):
     buildings = db.insideBuilding(id)
     print(buildings)
     # do something with building list
-    return loggedUser(id)
+    return redirect(url_for('loggedUser', id=id))
 
 if __name__ == '__main__':
     app.run()

@@ -5,8 +5,8 @@ def login():
     print("Login")
     username = input("Username:")
     password = input("Password:")
-    ToSend = {'username': username, 'password': password}
-    r = requests.post('http://127.0.0.1:5000/admin/login', json=ToSend)
+    toSend = {'username': username, 'password': password}
+    r = requests.post('http://127.0.0.1:5000/admin/login', json=toSend) #TODO change IP to any
     login_response = r.json()
     if login_response['status'] == "error during login":
         print("Wrong credentials")
