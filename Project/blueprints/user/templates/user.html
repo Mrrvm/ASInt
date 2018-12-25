@@ -7,9 +7,9 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <!-- Our CSS -->
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="{{ url_for('appUser.static', filename='styles.css') }}">
     <title>Chat Chat</title>
-    <link rel="shortcut icon" href="/static/logo.ico" />
+    <link rel="shortcut icon" href="{{ url_for('appUser.static', filename='logo.ico') }}" />
     <script>
         var photo_base64 = '{{ photo }}';
   </script>
@@ -19,7 +19,7 @@
 <div class="container mycontainer">
 
     <h1 class="my-4">Le Chat
-        <img width="30px" src="/static/logo.png" alt="logo" />
+        <img width="30px" src="{{ url_for('appUser.static', filename='logo.png') }}" alt="logo" />
         <small>Welcome</small>
     </h1>
     <div class="row">
@@ -76,7 +76,7 @@
 
 <footer class="footer bg-dark">
     <div class="container">
-        <p class="m-0 text-center text-white">2018, Made with <img width="15px" src="/static/love.png"> for Internet Based Systems Architecture </p>
+        <p class="m-0 text-center text-white">2018, Made with <img width="15px" src="{{ url_for('appUser.static', filename='love.png') }}"> for Internet Based Systems Architecture </p>
     </div>
 </footer>
 
