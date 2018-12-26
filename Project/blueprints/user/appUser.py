@@ -26,7 +26,7 @@ import appDB
 appUser = Blueprint('appUser', __name__, template_folder='templates', static_url_path='/blueprints/user/static', static_folder='./static')
 db = appDB.appDB()
 
-
+COOKIE_TIME = 60*60*8
 SECRET_KEY_USER = uuid.uuid4().hex
 fenixEdu_ClientId = "1695915081465915"
 fenixEdu_redirectURL = "http://127.0.0.1:5000/user/auth"
