@@ -29,7 +29,7 @@ db = appDB.appDB()
 
 SECRET_KEY_USER = uuid.uuid4().hex
 fenixEdu_ClientId = "1695915081465915"
-fenixEdu_redirectURL = "http://127.0.0.1:5000/users/auth"
+fenixEdu_redirectURL = "http://127.0.0.1:5000/user/auth"
 fenixEdu_ClientSecret = "xCzg7GMrhRI5ncklUy+wN3fl6UOdjHKVhUlWWaT5Ibm/PTbS5TEkJsmt5F62IwTXnZ5xGcqeMeia7K021Mtm6g=="
 DEFAULT_IP = "127.0.0.1"
 DEFAULT_PORT = "5000"
@@ -52,7 +52,7 @@ def loginUser():
     redirect_url = redirect_url + fenixEdu_ClientId + "&redirect_uri=" + fenixEdu_redirectURL
     return redirect(redirect_url)
 
-@appUser.route('/users/auth', methods=['GET'])
+@appUser.route('/user/auth', methods=['GET'])
 def authUser():
     code = request.args.get("code")
     request_url_access_token = 'https://fenix.tecnico.ulisboa.pt/oauth/access_token'
