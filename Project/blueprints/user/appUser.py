@@ -17,14 +17,16 @@ from flask import request
 from flask import make_response
 from flask import redirect
 from flask import url_for
+from blueprints.cache.cache import cache
 import requests
 import jwt
 import uuid
 import appDB
 
 appUser = Blueprint('appUser', __name__, template_folder='templates', static_url_path='/blueprints/user/static', static_folder='./static')
-
 db = appDB.appDB()
+
+
 SECRET_KEY_USER = uuid.uuid4().hex
 fenixEdu_ClientId = "1695915081465915"
 fenixEdu_redirectURL = "http://127.0.0.1:5000/users/auth"
@@ -41,7 +43,6 @@ def init():
 
 @appUser.route('/home/')
 def homeUser():
-    print("hi")
     return render_template("home.html")
 
 
@@ -74,13 +75,13 @@ def authUser():
 
 
 @appUser.route('/user/<id>')
+@cache.cached(timeout=50)
 def loggedUser(id):
     token = request.cookies.get('token')
     payload = jwt.decode(token, SECRET_KEY_USER, algorithms=['HS256'])
-    print(payload['u_id'])
     if id != payload['u_id']:
         return redirect(url_for('appUser.homeUser'))
-    u_data = db.getUser(id)[0] #TODO: add cache here
+    u_data = db.getUser(id)[0]
     u_name = u_data['name']
     u_photo = u_data['photo']
     u_location = u_data['location']

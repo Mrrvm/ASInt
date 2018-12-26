@@ -69,9 +69,6 @@ class appDB:
     def defineLocation(self, id, lat, long):
         self.users.update_many({"id": id}, {"$set": {"location": {"type": "Point", "coordinates": [float(long), float(lat)]}}})
 
-    def getUsersKeys(self, id):
-        return self.users.keys() #TODO : what is this for?
-
     def nearbyUsers(self, u_id):
         user_location = list(self.users.find({"id": u_id}, {"location": 1, "range": 1}))[0]
         lat_ = user_location['location']['coordinates'][1]
