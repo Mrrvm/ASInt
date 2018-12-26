@@ -75,7 +75,7 @@ def authUser():
 
 
 @appUser.route('/user/<id>')
-@cache.cached(timeout=50)
+@cache.cached(timeout=120)
 def loggedUser(id):
     token = request.cookies.get('token')
     payload = jwt.decode(token, SECRET_KEY_USER, algorithms=['HS256'])
@@ -87,7 +87,8 @@ def loggedUser(id):
     u_location = u_data['location']
     u_lat = u_location['coordinates'][1]
     u_long = u_location['coordinates'][0]
-    return render_template("user.html", name=u_name, photo=u_photo, userid=id, lat=u_lat, long=u_long)
+    u_range = u_data['range']
+    return render_template("user.html", name=u_name, photo=u_photo, userid=id, lat=u_lat, long=u_long, range=u_range)
 
 
 @appUser.route('/user/<id>/location', methods=['POST'])

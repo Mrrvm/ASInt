@@ -4,7 +4,7 @@ from blueprints.user.appUser import appUser
 from blueprints.admin.appAdmin import appAdmin
 
 app = Flask(__name__)
-cache.init_app(app)
+cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 app.register_blueprint(appUser)
 app.register_blueprint(appAdmin)
 

@@ -8,25 +8,32 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <!-- Our CSS -->
     <link rel="stylesheet" href="{{ url_for('appUser.static', filename='styles.css') }}">
-    <title>Chat Chat</title>
+    <title>Le Chat</title>
     <link rel="shortcut icon" href="{{ url_for('appUser.static', filename='logo.ico') }}" />
     <script>
         var photo_base64 = '{{ photo }}';
-  </script>
+    </script>
 </head>
 <body>
 
 <div class="container mycontainer">
 
-    <h1 class="my-4">Le Chat
-        <img width="30px" src="{{ url_for('appUser.static', filename='logo.png') }}" alt="logo" />
-        <small>Welcome</small>
-    </h1>
     <div class="row">
-        <div class="col-md-8 col-sm-8 mb-4">
-            <h2>{{ name }}</h2>
+        <div class="col-md-8 col-sm-8 mb-8" style="padding-left: 0">
+            <h1 class="my-4">Le Chat
+                <img width="30px" src="{{ url_for('appUser.static', filename='logo.png') }}" alt="logo" />
+                <small>Welcome</small>
+            </h1>
         </div>
-        <div class="center-block text-center col-md-4 col-sm-4 mb-4">
+        <div class="col-md-4 col-sm-4 mb-4" style="text-align: right;padding-top:40px">
+            <button type="submit" style="border-radius: 0px;" class="btn btn-default btn-dark">Logout</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-sm-8 mb-8" style="padding-left: 0;">
+            <h3>{{ name }}</h3>
+        </div>
+        <div class="col-md-4 col-sm-4 mb-4">
             <div id="img"></div>
         </div>
     </div>
@@ -36,41 +43,38 @@
         document.getElementById("img").innerHTML = "<img src='"+image.src+"' />";
     </script>
     <!-- Define location -->
-    <form action="{{ userid }}/location" method="post">
-        <h4>Define new location ({{ lat }}:{{ long }})</h4>
-        <div class="row" style="padding: 15px">
-            <div class="col-md-4 col-sm-4 mb-4" >
-                <div class="form-group">
-                    <input type="text" class="form-control" id="lat" name="lat" placeholder="Enter latitude">
+    <div class="row">
+        <div class="col-md-6 col-sm-6 mb-6" >
+            <form action="{{ userid }}/location" method="post">
+                <div class="row">
+                    <p>Define new location ({{ lat }}:{{ long }})</p>
                 </div>
-            </div>
-            <div class="col-md-4 col-sm-4 mb-4">
-                <div style="text-align: left;" class="form-group">
-                    <input type="text" class="form-control" id="long" name="long" placeholder="Enter longitude">
+                <div class="row form-group">
+                    <div class="col-md-6 col-sm-6 mb-6" style="padding: 0">
+                        <input type="text" class="form-control" id="lat" name="lat" placeholder="Enter latitude">
+                    </div>
+                    <div class="col-md-6 col-sm-6 mb-6" >
+                        <input type="text" class="form-control" id="long" name="long" placeholder="Enter longitude">
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4 col-sm-4 mb-4">
-                <button type="submit" style="border-radius: 0px;" class="btn btn-default btn-dark">Submit</button>
-            </div>
-        </div>
-    </form>
-    <!-- Send message -->
-    <form action="{{ userid }}/send" method="post">
-    <h4>Send messages</h4>
-        <div class="row" style="padding: 15px">
-            <div class="col-md-8 col-sm-8 mb-8">
-                <input type="text" class="form-control" id="msg" name="msg" placeholder="Enter message">
-            </div>
-            <div class="col-md-4 col-sm-4 mb-4">
-                <div class="form-group">
+                <div class="row form-group">
                     <button type="submit" style="border-radius: 0px;" class="btn btn-default btn-dark">Submit</button>
                 </div>
-            </div>
+            </form>
         </div>
-    </form>
-    <!-- Receive message -->
-    <h4>Receive messages</h4>
-    <div class="row" style="padding: 15px">
+        <div class="col-md-6 col-sm-6 mb-6" >
+            <form action="{{ userid }}/range" method="post">
+                <div class="row">
+                    <p>Define new range ({{ range }})</p>
+                </div>
+                <div class="row form-group">
+                    <input type="text" class="form-control" id="range" name="range" placeholder="Enter range">
+                </div>
+                <div class="row form-group">
+                    <button type="submit" style="border-radius: 0px;" class="btn btn-default btn-dark">Submit</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
