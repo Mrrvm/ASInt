@@ -122,3 +122,15 @@ class appDB:
             self.messages.insert_one({"message": message, "id": self.message_id})
             for destination in to_list:
                 self.message_table.insert_one({"from": u_id, "to": destination["id"], "id": self.message_id, "rcv": 0})
+
+    def getNewMessages(self, u_id):
+        new_messages_results = list(self.message_table.find({"to": u_id, "rcv": 0},{"id": 1, "from": 1}))
+        new_messages = []
+        for message in new_messages_results:
+            message_text = list(self.messages.find({"id": message["id"]},{"message": 1}))[0]["message"]
+            new_messages.append({"from": message["from"], "text": message_text})
+        return new_messages
+
+    def messagesReceived(self, id_list):
+        for id in id_list:
+            self.message_table.update_many({"id": id}, {"$set": {"rcv": 1}})
