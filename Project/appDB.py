@@ -115,12 +115,10 @@ class appDB:
             to_list = list(to_list)
         else:
             pass
-        print(to_list)
         if not to_list:
-            print("ola")
             pass
         else:
             self.message_id = self.message_id + 1
             self.messages.insert_one({"message": message, "id": self.message_id})
             for destination in to_list:
-                self.message_table.insert_one({"from": u_id, "to": destination["id"], "id": self.message_id})
+                self.message_table.insert_one({"from": u_id, "to": destination["id"], "id": self.message_id, "rcv": 0})
