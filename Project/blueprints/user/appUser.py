@@ -7,8 +7,8 @@ Contains the following user routes
 /users/auth
 /user/<id>
 /user/<id>/location
-/user/<id>/nearby
-/user/<id>/buildings
+/user/<id>/nearby_range
+/user/<id>/nearby_buildings
 """
 
 from flask import Blueprint
@@ -26,7 +26,7 @@ import appDB
 appUser = Blueprint('appUser', __name__, template_folder='templates', static_url_path='/blueprints/user/static', static_folder='./static')
 db = appDB.appDB()
 
-
+COOKIE_TIME = 60*60*24
 SECRET_KEY_USER = uuid.uuid4().hex
 fenixEdu_ClientId = "1695915081465915"
 fenixEdu_redirectURL = "http://127.0.0.1:5000/user/auth"
@@ -36,6 +36,16 @@ DEFAULT_PORT = "5000"
 DEFAULT_LAT = "38.73"
 DEFAULT_LONG = "-9.14"
 DEFAULT_RANGE = "10"
+
+def verifyUser():
+    # I apolagize. No patience for decoding errors of ancient cookies.
+    try:
+        token = request.cookies.get('token')
+        payload = jwt.decode(token, SECRET_KEY_USER, algorithms=['HS256'])
+        if id != payload['u_id']:
+            return redirect(url_for('appUser.homeUser'))
+    except:
+        return redirect(url_for('appUser.homeUser'))
 
 @appUser.route('/')
 def init():
@@ -69,18 +79,15 @@ def authUser():
     db.addUser(u_id, DEFAULT_LAT, DEFAULT_LONG, DEFAULT_RANGE, u_name, u_photo['data'])
     resp = make_response(redirect(url_for('appUser.loggedUser', id=u_id)))
     u_token = jwt.encode({'u_id': u_id}, SECRET_KEY_USER, algorithm='HS256').decode('utf-8')
-    resp.set_cookie('token', u_token)
+    resp.set_cookie('token', u_token, COOKIE_TIME)
     return resp
 
 
 
 @appUser.route('/user/<id>')
-@cache.cached(timeout=120)
+@cache.cached(timeout=50) #TODO: too long?
 def loggedUser(id):
-    token = request.cookies.get('token')
-    payload = jwt.decode(token, SECRET_KEY_USER, algorithms=['HS256'])
-    if id != payload['u_id']:
-        return redirect(url_for('appUser.homeUser'))
+    verifyUser()
     u_data = db.getUser(id)[0]
     u_name = u_data['name']
     u_photo = u_data['photo']
@@ -93,22 +100,32 @@ def loggedUser(id):
 
 @appUser.route('/user/<id>/location', methods=['POST'])
 def defineLocation(id):
+    verifyUser()
     lat = request.form["lat"]
     long = request.form["long"]
     db.defineLocation(id, lat, long)
     return redirect(url_for('appUser.loggedUser', id=id))
 
+@appUser.route('/user/<id>/range', methods=['POST'])
+def defineRange(id):
+    verifyUser()
+    range = request.form["range"]
+    db.defineRange(id, range)
+    return redirect(url_for('appUser.loggedUser', id=id))
 
-@appUser.route('/user/<id>/nearby', methods=['GET'])
+
+@appUser.route('/user/<id>/nearby_range', methods=['POST'])
 def nearbyUsers(id):
+    verifyUser()
     nearby = db.nearbyUsers(id)
     print(nearby)
     #TODO: show user
     return redirect(url_for('appUser.loggedUser', id=id))
 
 
-@appUser.route('/user/<id>/buildings', methods=['GET'])
+@appUser.route('/user/<id>/nearby_buildings', methods=['POST'])
 def insideBuilding(id):
+    verifyUser()
     buildings = db.insideBuilding(id)
     print(buildings)
     # TODO: show user
