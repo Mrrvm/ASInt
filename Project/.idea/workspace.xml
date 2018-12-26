@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7064f490-ea6a-4fe1-adf5-b7cffe6df2cc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/blueprints/cache/cache.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/appDB.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blueprints/user/appUser.py" beforeDir="false" afterPath="$PROJECT_DIR$/blueprints/user/appUser.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -90,15 +86,16 @@
           <entry key="css" value="193" />
           <entry key="dummy" value="48" />
           <entry key="html" value="354" />
-          <entry key="py" value="1821" />
+          <entry key="py" value="1853" />
+          <entry key="txt" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="193" />
           <entry key="HTML" value="354" />
-          <entry key="PLAIN_TEXT" value="48" />
-          <entry key="Python" value="1821" />
+          <entry key="PLAIN_TEXT" value="60" />
+          <entry key="Python" value="1853" />
         </counts>
       </usages-collector>
     </session>
@@ -108,20 +105,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="8" column="15" lean-forward="true" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
+            <state relative-caret-position="225">
+              <caret line="9" selection-start-line="9" selection-end-line="9" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/blueprints/cache/cache.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="50">
-              <caret line="2" column="15" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -144,11 +132,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/blueprints/user/appUser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="15" column="14" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
+            <state relative-caret-position="1475">
+              <caret line="80" column="70" selection-start-line="80" selection-start-column="70" selection-end-line="80" selection-end-column="70" />
+              <folding>
+                <element signature="e#157#184#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -219,9 +210,9 @@
         <option value="$PROJECT_DIR$/interfaceAdmin.py" />
         <option value="$PROJECT_DIR$/blueprints/admin/appAdmin.py" />
         <option value="$PROJECT_DIR$/appDB.py" />
+        <option value="$PROJECT_DIR$/blueprints/cache/cache.py" />
         <option value="$PROJECT_DIR$/app.py" />
         <option value="$PROJECT_DIR$/blueprints/user/appUser.py" />
-        <option value="$PROJECT_DIR$/blueprints/cache/cache.py" />
       </list>
     </option>
   </component>
@@ -380,18 +371,26 @@
       <option name="presentableId" value="Default" />
       <updated>1544215059819</updated>
     </task>
+    <task id="LOCAL-00001" summary="Added cache">
+      <created>1545824726227</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1545824726227</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="45" width="2562" height="1396" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18298556" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18298556" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3294893" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.24217463" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.24217463" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -414,6 +413,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added cache" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added cache" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/text2png.py" />
@@ -461,27 +464,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blueprints/user/appUser.py">
+    <entry file="file://$PROJECT_DIR$/blueprints/cache/cache.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="15" column="14" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
+        <state>
+          <caret column="18" selection-start-column="18" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="8" column="15" lean-forward="true" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
+        <state relative-caret-position="225">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blueprints/cache/cache.py">
+    <entry file="file://$PROJECT_DIR$/blueprints/user/appUser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="2" column="15" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
+        <state relative-caret-position="1475">
+          <caret line="80" column="70" selection-start-line="80" selection-start-column="70" selection-end-line="80" selection-end-column="70" />
+          <folding>
+            <element signature="e#157#184#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
