@@ -104,6 +104,13 @@ class appDB:
         self.bots.delete_one({"id": int(bot_id)})
 
     ##########################################
+    # Bot database operations
+    ##########################################
+
+    def botKey(self, bot_id):
+        return list(self.bots.find({"id": bot_id},{"_id":0, "key": 1}))[0]['key']
+
+    ##########################################
     # User database operations
     ##########################################
 
