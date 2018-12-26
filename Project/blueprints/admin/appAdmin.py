@@ -101,3 +101,32 @@ def single_user(id):
     else:
         user = db.showUser(id)
         return jsonify(user)
+
+@appAdmin.route('/admin/bots', methods=['GET'])
+def showBots():
+    admin_key = request.json["key"]
+    if admin_key != admin_login['key']:
+        return jsonify({"status": "not logged in"})
+    else:
+        bots = db.showAllBots()
+        return jsonify(bots)
+
+@appAdmin.route('/admin/bots/new', methods=['POST'])
+def newBot():
+    admin_key = request.json["key"]
+    if admin_key != admin_login['key']:
+        return jsonify({"status": "not logged in"})
+    else:
+        allowed_buildings = request.json["buildings"]
+        bot = db.newBot(allowed_buildings)
+        return jsonify(bot)
+
+@appAdmin.route('/admin/bots/delete', methods=['POST'])
+def deleteBot():
+    admin_key = request.json["key"]
+    if admin_key != admin_login['key']:
+        return jsonify({"status": "not logged in"})
+    else:
+        bot_id = request.json["id"]
+        db.deleteBot(bot_id)
+        return '', 204

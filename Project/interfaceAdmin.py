@@ -60,17 +60,40 @@ def users(endpoint, key):
         for key, val in user.items():
             print(key + ": " + str(val))
 
+def bots(endpoint, key):
+    print("\nChoose one of the following:")
+    u_input = input("[1]ListAll  [2]NewBot  [3]DeleteBot:\n")
+    if u_input == "1":
+        toSend = {'key': key}
+        r = requests.get(endpoint, json=toSend)
+        bot_list = r.json()
+        for bot in bot_list:
+            print("ID: " + str(bot['id']) + " Key: " + bot['key'] + " Buildings: " + str(bot['buildings']))
+    elif u_input == "2":
+        allowed_buildings = input("Insert buildings ID1,ID2,...IDn (separated by ,):\n").split(',')
+        toSend = {'key': key, 'buildings': allowed_buildings}
+        r = requests.post(endpoint + "/new", json=toSend)
+        new_bot = r.json()
+        for key, val in new_bot.items():
+            print(key + ": " + str(val))
+    elif u_input == "3":
+        bot_id = input("Bot id: ")
+        toSend = {'id': bot_id, 'key': key}
+        r = requests.post(endpoint + "/delete", json=toSend)
+
 
 if __name__ == '__main__':
     username, key = login()
     while(1):
         print("\nChoose one of the following:")
-        u_input = input("[1]Buildings  [2]Users  [3]Quit\n")
+        u_input = input("[1]Buildings  [2]Users  [3]Bots  [4]Quit\n")
         endpoint = "http://127.0.0.1:5000/admin"
         if u_input == "1":
             buildings(endpoint + "/buildings", key)
         elif u_input == "2":
             users(endpoint + "/users", key)
         elif u_input == "3":
+            bots(endpoint + "/bots", key)
+        elif u_input == "4":
             print("Goodbye " + username)
             exit(0)

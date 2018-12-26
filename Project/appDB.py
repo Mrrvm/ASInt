@@ -1,4 +1,5 @@
 import pymongo
+import uuid
 from bson.son import SON
 
 building_range = 100.00
@@ -16,6 +17,7 @@ class appDB:
         self.message_table = self.database["message_table"]
         self.buildings.create_index([("location", pymongo.GEOSPHERE)])
         self.users.create_index([("location", pymongo.GEOSPHERE)])
+        self.bots = self.database["bots"]
 
         # get maximum id from existing messages
         messages_ids_results = list(self.message_table.find({}, {"_id": 0, "id": 1}))
@@ -26,6 +28,16 @@ class appDB:
             for message in messages_ids_results:
                 messages_ids.append(int(message["id"]))
             self.message_id = max(messages_ids)
+
+        # get maximum id from existing bots
+        bots_ids_results = list(self.bots.find({}, {"_id": 0, "id": 1}))
+        if not bots_ids_results:
+            self.bot_id = 0
+        else:
+            bots_ids = []
+            for bot in bots_ids_results:
+                bots_ids.append(int(bot["id"]))
+            self.bot_id = max(bots_ids)
 
     ##########################################
     # Admin database operations
@@ -76,6 +88,21 @@ class appDB:
         user_data['longitude'] = user_data['location']['coordinates'][0]
         user_data.pop('location', None)
         return user_data
+
+    def showAllBots(self):
+        return list(self.bots.find({},{ "_id": 0}))
+
+    def newBot(self, allowed_buildings):
+        self.bot_id = self.bot_id + 1
+        bot_key = str(uuid.uuid4())
+        new_bot = {"id": self.bot_id, "key": bot_key, "buildings": allowed_buildings}
+        self.bots.insert_one(new_bot)
+        new_bot.pop('_id', None)
+        print(new_bot)
+        return new_bot
+
+    def deleteBot(self, bot_id):
+        self.bots.delete_one({"id": int(bot_id)})
 
     ##########################################
     # User database operations
