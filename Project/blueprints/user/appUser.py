@@ -7,8 +7,8 @@ Contains the following user routes
 /users/auth
 /user/<id>
 /user/<id>/location
-/user/<id>/nearby_range
-/user/<id>/nearby_buildings
+/user/<id>/nearby
+/user/<id>/buildings
 """
 
 from flask import Blueprint
@@ -26,7 +26,7 @@ import appDB
 appUser = Blueprint('appUser', __name__, template_folder='templates', static_url_path='/blueprints/user/static', static_folder='./static')
 db = appDB.appDB()
 
-COOKIE_TIME = 60*60*24
+
 SECRET_KEY_USER = uuid.uuid4().hex
 fenixEdu_ClientId = "1695915081465915"
 fenixEdu_redirectURL = "http://127.0.0.1:5000/user/auth"
@@ -126,9 +126,22 @@ def nearbyUsers(id):
 @appUser.route('/user/<id>/nearby_buildings', methods=['POST'])
 def insideBuilding(id):
     verifyUser()
-    buildings = db.insideBuilding(id)
+    buildings = db.containingBuildings(id)
     print(buildings)
     # TODO: show user
+    return redirect(url_for('appUser.loggedUser', id=id))
+
+
+@appUser.route('/user/<id>/send/nearby', methods=['POST'])
+def sendMessageNearby(id):
+    message = request.json["message"]
+    db.storeMessage(id, message, "nearby")
+    return redirect(url_for('appUser.loggedUser', id=id))
+
+@appUser.route('/user/<id>/send/building', methods=['POST'])
+def sendMessageBuilding(id):
+    message = request.json["message"]
+    db.storeMessage(id, message, "building")
     return redirect(url_for('appUser.loggedUser', id=id))
 
 # TODO: send messages

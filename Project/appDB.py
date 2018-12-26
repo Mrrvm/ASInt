@@ -11,9 +11,21 @@ class appDB:
         self.database = client["chatist"]
         self.users = self.database["users"]
         self.buildings = self.database["buildings"]
+        self.movements = self.database["movements"]
+        self.messages = self.database["messages"]
+        self.message_table = self.database["message_table"]
         self.buildings.create_index([("location", pymongo.GEOSPHERE)])
         self.users.create_index([("location", pymongo.GEOSPHERE)])
 
+        # get maximum id from existing messages
+        messages_ids_results = list(self.message_table.find({}, {"_id": 0, "id": 1}))
+        if not messages_ids_results:
+            self.message_id = 0
+        else:
+            messages_ids = []
+            for message in messages_ids_results:
+                messages_ids.append(int(message["id"]))
+            self.message_id = max(messages_ids)
 
     def addBuilding(self, name, lat, long, b_id):
         self.buildings.insert_one({"id": b_id, "name": name, "location": {"type": "Point", "coordinates": [float(long), float(lat)]}})
@@ -40,6 +52,17 @@ class appDB:
                           ('$maxDistance', float(building_range))])}}
         #return without location as it's likely unnecessary
         return list(self.buildings.find(query,{ "_id": 0, "location": 0}))
+
+
+    def containingBuildings(self, u_id):
+        user_location = list(self.users.find({"id": u_id}, {"location": 1, "range": 1}))[0]
+        u_lat = user_location['location']['coordinates'][1]
+        u_long = user_location['location']['coordinates'][0]
+        query = {'location': {
+            '$near': SON([('$geometry', SON([('type', 'Point'), ('coordinates', [float(u_long), float(u_lat)])])),
+                          ('$maxDistance', float(building_range))])}}
+        #return without location as it's likely unnecessary
+        return list(self.buildings.find(query, {"_id": 0, "location": 0}))
 
     def showAllUsers(self):
         return list(self.users.find({},{ "_id": 0, "photo": 0, "location": 0, "range": 0}))
@@ -76,4 +99,35 @@ class appDB:
         # return without location as it's likely unnecessary
         return list(self.users.find(query, {"_id": 0, "location": 0, "range": 0}))
 
-    #, 'id': {'$not': u_id}
+    def storeMessage(self, u_id, message, method):
+        to_list = []
+        if method is "nearby":
+            to_list = self.nearbyUsers(u_id)
+        elif method is "building":
+            # set to remove repeated destinations
+            to_list = set()
+            building_list = self.containingBuildings(u_id)
+            for b in building_list:
+                to_list.add(self.insideBuilding(b["id"]))
+            to_list = list(to_list)
+        else:
+            pass
+        if not to_list:
+            pass
+        else:
+            self.message_id = self.message_id + 1
+            self.messages.insert_one({"message": message, "id": self.message_id})
+            for destination in to_list:
+                self.message_table.insert_one({"from": u_id, "to": destination["id"], "id": self.message_id, "rcv": 0})
+
+    def getNewMessages(self, u_id):
+        new_messages_results = list(self.message_table.find({"to": u_id, "rcv": 0},{"id": 1, "from": 1}))
+        new_messages = []
+        for message in new_messages_results:
+            message_text = list(self.messages.find({"id": message["id"]},{"message": 1}))[0]["message"]
+            new_messages.append({"from": message["from"], "text": message_text})
+        return new_messages
+
+    def messagesReceived(self, id_list):
+        for id in id_list:
+            self.message_table.update_many({"id": id}, {"$set": {"rcv": 1}})
