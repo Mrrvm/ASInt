@@ -109,9 +109,22 @@ def nearbyUsers(id):
 
 @appUser.route('/user/<id>/buildings', methods=['GET'])
 def insideBuilding(id):
-    buildings = db.insideBuilding(id)
+    buildings = db.containingBuildings(id)
     print(buildings)
     # TODO: show user
+    return redirect(url_for('appUser.loggedUser', id=id))
+
+
+@appUser.route('/user/<id>/send/nearby', methods=['POST'])
+def sendMessageNearby(id):
+    message = request.json["message"]
+    db.storeMessage(id, message, "nearby")
+    return redirect(url_for('appUser.loggedUser', id=id))
+
+@appUser.route('/user/<id>/send/building', methods=['POST'])
+def sendMessageBuilding(id):
+    message = request.json["message"]
+    db.storeMessage(id, message, "building")
     return redirect(url_for('appUser.loggedUser', id=id))
 
 # TODO: send messages
