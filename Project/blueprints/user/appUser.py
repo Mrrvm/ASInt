@@ -21,10 +21,10 @@ from blueprints.cache.cache import cache
 import requests
 import jwt
 import uuid
-import appDB
+from app import db
 
 appUser = Blueprint('appUser', __name__, template_folder='templates', static_url_path='/blueprints/user/static', static_folder='./static')
-db = appDB.appDB()
+
 
 COOKIE_TIME = 60*60*8
 SECRET_KEY_USER = uuid.uuid4().hex
@@ -132,13 +132,13 @@ def insideBuilding(id):
     return redirect(url_for('appUser.loggedUser', id=id))
 
 
-@appUser.route('/user/<id>/send/nearby', methods=['POST'])
+@appUser.route('/user/<id>/send/nearby_range', methods=['POST'])
 def sendMessageNearby(id):
     message = request.json["message"]
     db.storeMessage(id, message, "nearby")
     return redirect(url_for('appUser.loggedUser', id=id))
 
-@appUser.route('/user/<id>/send/building', methods=['POST'])
+@appUser.route('/user/<id>/send/nearby_building', methods=['POST'])
 def sendMessageBuilding(id):
     message = request.json["message"]
     db.storeMessage(id, message, "building")

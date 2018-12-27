@@ -83,16 +83,33 @@
         </div>
         <div class="col-md-4 col-sm-4 mb-4">
             <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">
-                    <img width="30px" src="{{ url_for('appUser.static', filename='logo.png') }}" alt="logo" />
-                    <small>Near me</small>
-                </h4>
+                <div class="card-header">
+                    <h4 class="card-title">
+                        <img width="30px" src="{{ url_for('appUser.static', filename='logo.png') }}" alt="logo" />
+                        <small>Near me</small>
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <p>By Range</p>
+                    </div>
+                    <div class="row" id="byrange">
+                    </div>
+                    <div class="row">
+                        <p>By Building</p>
+                    </div>
+                    <div class="row" id="bybuilding">
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-            <p class="card-text">Text for this card.</p>
-            </div>
-            </div>
+            <script type=text/javascript>
+                $.ajax('{{ userid }}/nearby_range',
+                    {
+                        success: function () {
+                            $('p').append(data);
+                    }
+                });
+            </script>
         </div>
         <div class="col-md-4 col-sm-4 mb-4">
             <div class="card">
