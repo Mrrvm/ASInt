@@ -172,6 +172,6 @@ def logout(id):
     if verifyUser(id) != 0:
         resp = make_response(redirect(url_for('appUser.homeUser', id=id)))
         resp.delete_cookie('token') #TODO: not rly working
-        #TODO : set online=0
+        db.logoutUser(id)
         return resp
     return redirect(url_for('appUser.homeUser'))

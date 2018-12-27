@@ -133,6 +133,10 @@ class appDB:
         else:
             self.users.update_many({"id": u_id}, {"$set": {"logged_in": "yes"}})
 
+    def logoutUser(self, u_id):
+        if list(self.users.find({"id": u_id, "logged_in": "yes"})):
+            self.users.update_many({"id": u_id}, {"$set": {"logged_in": "no"}})
+
     def getUser(self, u_id):
         return list(self.users.find({"id": u_id}, {"_id": 0}))
 
