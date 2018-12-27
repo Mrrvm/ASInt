@@ -153,4 +153,20 @@ def sendMessageBuilding(id):
         return redirect(url_for('appUser.loggedUser', id=id))
     return redirect(url_for('appUser.homeUser'))
 
+
+@appUser.route('/user/<id>/receive/new', methods=['POST'])
+def receiveNewMessages(id):
+    if verifyUser(id) != 0:
+        new_messages = db.getNewMessages(id)
+        return jsonify(new_messages)
+    return redirect(url_for('appUser.homeUser'))
+
+
+@appUser.route('/user/<id>/receive/all', methods=['POST'])
+def receiveNewMessages(id):
+    if verifyUser(id) != 0:
+        all_messages = db.getAllMessages(id)
+        return jsonify(all_messages)
+    return redirect(url_for('appUser.homeUser'))
+
 # TODO: send messages
