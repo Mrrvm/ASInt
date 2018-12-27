@@ -153,20 +153,25 @@ def sendMessageBuilding(id):
         return redirect(url_for('appUser.loggedUser', id=id))
     return redirect(url_for('appUser.homeUser'))
 
-
-@appUser.route('/user/<id>/receive/new', methods=['POST'])
-def receiveNewMessages(id):
+@appUser.route('/user/<id>/recv', methods=['POST'])
+def recvMessages(id):
     if verifyUser(id) != 0:
-        new_messages = db.getNewMessages(id)
-        return jsonify(new_messages)
+        msgs = db.getNewMessages(id)
+        return jsonify(msgs)
     return redirect(url_for('appUser.homeUser'))
 
-
-@appUser.route('/user/<id>/receive/all', methods=['POST'])
-def receiveNewMessages(id):
+@appUser.route('/user/<id>/recvall', methods=['POST'])
+def recvAllMessages(id):
     if verifyUser(id) != 0:
-        all_messages = db.getAllMessages(id)
-        return jsonify(all_messages)
+        msgs = db.getAllMessages(id)
+        return jsonify(msgs)
     return redirect(url_for('appUser.homeUser'))
 
-# TODO: send messages
+@appUser.route('/user/<id>/logout', methods=['POST'])
+def logout(id):
+    if verifyUser(id) != 0:
+        resp = make_response(redirect(url_for('appUser.homeUser', id=id)))
+        resp.delete_cookie('token') #TODO: not rly working
+        #TODO : set online=0
+        return resp
+    return redirect(url_for('appUser.homeUser'))
