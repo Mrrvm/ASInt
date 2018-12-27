@@ -139,7 +139,7 @@ class appDB:
     def defineRange(self, u_id, u_range):
         self.users.update_many({"id": u_id}, {"$set": {"range": u_range}})
 
-    def nearbyUsers(self, u_id):
+    def nearbyUsers(self, u_id, option):
         user_location = list(self.users.find({"id": u_id}, {"location": 1, "range": 1}))[0]
         u_lat = user_location['location']['coordinates'][1]
         u_long = user_location['location']['coordinates'][0]
@@ -148,12 +148,15 @@ class appDB:
                                         [float(u_long), float(u_lat)])])),
                                        ('$maxDistance', float(u_range))])}, 'id': {'$ne': u_id}}
         # return without location as it's likely unnecessary
-        return list(self.users.find(query, {"_id": 0, "location": 0, "range": 0}))
+        if option is 'IDS':
+            return list(self.users.find(query, {"id": 1}))
+        elif option is 'PHOTO':
+            return list(self.users.find(query, {"_id": 0, "location": 0, "range": 0}))
 
     def sendMessage(self, u_id, message, method):
         to_list = []
         if method is "nearby":
-            to_list = self.nearbyUsers(u_id)
+            to_list = self.nearbyUsers(u_id, 'IDS')
         elif method is "building":
             # set to remove repeated destinations
             to_list = []

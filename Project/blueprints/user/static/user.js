@@ -45,7 +45,6 @@ function get_nearby_building(){
                 var name = data[i]['name'];
                 html_data += "<div class='col-md-2 col-sm-2 mb-2'><img class='contacts' src='" + image.src + "'/></div><div class='col-md-8 col-sm-8 mb-8'><p>" + name + "</p></div><div class='col-md-2 col-sm-2 mb-2'></div>";
             }
-            i = 0;
             if(i == 0) {
                 document.getElementById("bybuilding").innerHTML = "<div class='col-md-12 col-sm-12 mb-12'><p>Nothing to show.</p></div>";
                 $('#bb_form').hide();

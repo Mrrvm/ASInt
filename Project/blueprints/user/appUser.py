@@ -39,15 +39,18 @@ DEFAULT_LAT = "38.73"
 DEFAULT_LONG = "-9.14"
 DEFAULT_RANGE = "10"
 
-def verifyUser():
+def verifyUser(id):
     # I apolagize. No patience for decoding errors of ancient cookies.
     try:
         token = request.cookies.get('token')
         payload = jwt.decode(token, SECRET_KEY_USER, algorithms=['HS256'])
+        print(payload['u_id'])
+        print(id)
         if id != payload['u_id']:
-            return redirect(url_for('appUser.homeUser'))
+            return 0
+        return 1
     except:
-        return redirect(url_for('appUser.homeUser'))
+        return 0
 
 @appUser.route('/')
 def init():
@@ -89,57 +92,65 @@ def authUser():
 @appUser.route('/user/<id>')
 @cache.cached(timeout=50) #TODO: too long?
 def loggedUser(id):
-    verifyUser()
-    u_data = db.getUser(id)[0]
-    u_name = u_data['name']
-    u_photo = u_data['photo']
-    u_location = u_data['location']
-    u_lat = u_location['coordinates'][1]
-    u_long = u_location['coordinates'][0]
-    u_range = u_data['range']
-    return render_template("user.html", name=u_name, photo=u_photo, userid=id, lat=u_lat, long=u_long, range=u_range)
+    if verifyUser(id) != 0:
+        u_data = db.getUser(id)[0]
+        u_name = u_data['name']
+        u_photo = u_data['photo']
+        u_location = u_data['location']
+        u_lat = u_location['coordinates'][1]
+        u_long = u_location['coordinates'][0]
+        u_range = u_data['range']
+        return render_template("user.html", name=u_name, photo=u_photo, userid=id, lat=u_lat, long=u_long, range=u_range)
+    return redirect(url_for('appUser.homeUser'))
 
 
 @appUser.route('/user/<id>/location', methods=['POST'])
 def defineLocation(id):
-    verifyUser()
-    lat = request.form["lat"]
-    long = request.form["long"]
-    db.defineLocation(id, lat, long)
-    return redirect(url_for('appUser.loggedUser', id=id))
+    if verifyUser(id) != 0:
+        lat = request.form["lat"]
+        long = request.form["long"]
+        db.defineLocation(id, lat, long)
+        return redirect(url_for('appUser.loggedUser', id=id))
+    return redirect(url_for('appUser.homeUser'))
 
 @appUser.route('/user/<id>/range', methods=['POST'])
 def defineRange(id):
-    verifyUser()
-    range = request.form["range"]
-    db.defineRange(id, range)
-    return redirect(url_for('appUser.loggedUser', id=id))
-
+    if verifyUser(id) != 0:
+        range = request.form["range"]
+        db.defineRange(id, range)
+        return redirect(url_for('appUser.loggedUser', id=id))
+    return redirect(url_for('appUser.homeUser'))
 
 @appUser.route('/user/<id>/nearby_range', methods=['POST'])
 def nearbyUsers(id):
-    verifyUser()
-    nearby = db.nearbyUsers(id)
-    return jsonify(nearby)
+    if verifyUser(id) != 0:
+        nearby = db.nearbyUsers(id, 'PHOTO')
+        return jsonify(nearby)
+    return redirect(url_for('appUser.homeUser'))
 
 
 @appUser.route('/user/<id>/nearby_buildings', methods=['POST'])
 def insideBuilding(id):
-    verifyUser()
-    #TODO : fix this
-    nearby = db.nearbyUsers(id)
-    return jsonify(nearby)
+    if verifyUser(id) != 0:
+        #TODO : fix this
+        nearby = db.nearbyUsers(id, 'PHOTO')
+        return jsonify(nearby)
+    return redirect(url_for('appUser.homeUser'))
 
 @appUser.route('/user/<id>/send/nearby_range', methods=['POST'])
 def sendMessageNearby(id):
-    message = request.json["message"]
-    db.storeMessage(id, message, "nearby")
-    return redirect(url_for('appUser.loggedUser', id=id))
+    if verifyUser(id) != 0:
+        message = request.form["msg_nbr"]
+        db.sendMessage(id, message, "nearby")
+        return redirect(url_for('appUser.loggedUser', id=id))
+    return redirect(url_for('appUser.homeUser'))
 
 @appUser.route('/user/<id>/send/nearby_building', methods=['POST'])
 def sendMessageBuilding(id):
-    message = request.json["message"]
-    db.sendMessage(id, message, "building")
-    return redirect(url_for('appUser.loggedUser', id=id))
+    if verifyUser(id) != 0:
+        message = request.form["msg_nbb"]
+        db.sendMessage(id, message, "building")
+        return redirect(url_for('appUser.loggedUser', id=id))
+    return redirect(url_for('appUser.homeUser'))
 
 # TODO: send messages
