@@ -18,10 +18,11 @@ from flask import make_response
 from flask import redirect
 from flask import url_for
 from blueprints.cache.cache import cache
+from blueprints.db.db import db
 import requests
 import jwt
 import uuid
-from app import db
+
 
 appUser = Blueprint('appUser', __name__, template_folder='templates', static_url_path='/blueprints/user/static', static_folder='./static')
 

@@ -13,11 +13,10 @@ Contains the following user routes
 from flask import Blueprint
 from flask import request
 from flask import jsonify
-import appDB
+from blueprints.db.db import db
 
 appBot = Blueprint('appBot', __name__, template_folder='templates')
 
-db = appDB.appDB()
 
 @appBot.route('/bot', methods=['POST'])
 def botMessage():

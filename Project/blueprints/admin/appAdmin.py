@@ -13,7 +13,7 @@ Contains the following user routes
 from flask import Blueprint
 from flask import request
 from flask import jsonify
-from app import db
+from blueprints.db.db import db
 
 appAdmin = Blueprint('appAdmin', __name__, template_folder='templates')
 
