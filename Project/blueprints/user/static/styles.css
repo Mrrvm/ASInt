@@ -9,6 +9,7 @@ html, body {
     padding-right: 50px;
     padding-bottom: 50px;
     background-color: white;
+    min-height: 100%;
 }
 
 .footer {
@@ -16,3 +17,12 @@ html, body {
     margin-bottom: 0;
 }
 
+img#profile {
+    border-radius: 30%;
+}
+
+img.contacts {
+    border-radius: 30%;
+    max-width: 100%;
+    height: auto;
+}

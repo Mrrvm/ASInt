@@ -41,9 +41,6 @@ class appDB:
                 bots_ids.append(int(bot["id"]))
             self.bot_id = max(bots_ids)
 
-    ##########################################
-    # Admin database operations
-    ##########################################
 
     def addBuilding(self, name, lat, long, b_id):
         self.buildings.insert_one({"id": b_id, "name": name, "location": {"type": "Point", "coordinates": [float(long), float(lat)]}})
@@ -69,7 +66,7 @@ class appDB:
             '$near': SON([('$geometry', SON([('type', 'Point'), ('coordinates', [float(long_), float(lat_)])])),
                           ('$maxDistance', float(building_range))])}}
         #return without location as it's likely unnecessary
-        return list(self.users.find(query,{ "_id": 0, "id": 1}))
+        return list(self.users.find(query, {"_id": 0, "location": 0, "range": 0}))
 
     def containingBuildings(self, u_id):
         user_location = list(self.users.find({"id": u_id}, {"location": 1, "range": 1}))[0]
@@ -106,9 +103,6 @@ class appDB:
     def deleteBot(self, bot_id):
         self.bots.delete_one({"id": int(bot_id)})
 
-    ##########################################
-    # Bot database operations
-    ##########################################
 
     def botKey(self, bot_id):
         query_result = list(self.bots.find({"id": bot_id},{"_id":0, "key": 1}))
@@ -130,9 +124,6 @@ class appDB:
             for destination in to_list:
                 self.message_table.insert_one({"from": "BOT " + str(bot_id), "to": destination["id"], "id": self.message_id, "rcv": 0})
 
-    ##########################################
-    # User database operations
-    ##########################################
 
     def addUser(self, u_id, u_lat, u_long, u_range, u_name, u_photo):
         if not list(self.users.find({"id": u_id})):

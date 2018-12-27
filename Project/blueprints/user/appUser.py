@@ -12,6 +12,7 @@ Contains the following user routes
 """
 
 from flask import Blueprint
+from flask import jsonify
 from flask import render_template
 from flask import request
 from flask import make_response
@@ -119,19 +120,15 @@ def defineRange(id):
 def nearbyUsers(id):
     verifyUser()
     nearby = db.nearbyUsers(id)
-    print(nearby)
-    #TODO: show user
-    return redirect(url_for('appUser.loggedUser', id=id))
+    return jsonify(nearby)
 
 
 @appUser.route('/user/<id>/nearby_buildings', methods=['POST'])
 def insideBuilding(id):
     verifyUser()
-    buildings = db.containingBuildings(id)
-    print(buildings)
-    # TODO: show user
-    return redirect(url_for('appUser.loggedUser', id=id))
-
+    #TODO : fix this
+    nearby = db.nearbyUsers(id)
+    return jsonify(nearby)
 
 @appUser.route('/user/<id>/send/nearby_range', methods=['POST'])
 def sendMessageNearby(id):
