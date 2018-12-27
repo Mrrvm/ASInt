@@ -58,14 +58,16 @@ class appDB:
         b_data.pop('location', None)
         return b_data
 
-    def insideBuilding(self, b_id):
+    def insideBuilding(self, b_id, excluding, u_id):
         building_location = list(self.buildings.find({"id": b_id}, {"location": 1}))[0]
         lat_ = building_location['location']['coordinates'][1]
         long_ = building_location['location']['coordinates'][0]
         query = {'location': {
             '$near': SON([('$geometry', SON([('type', 'Point'), ('coordinates', [float(long_), float(lat_)])])),
                           ('$maxDistance', float(building_range))])}}
-        #return without location as it's likely unnecessary
+        # has to exclude sender of messages of searcher of nearby
+        if excluding:
+            query['id'] = {'$ne': u_id}
         return list(self.users.find(query, {"_id": 0, "location": 0, "range": 0}))
 
     def containingBuildings(self, u_id):
@@ -79,10 +81,10 @@ class appDB:
         return list(self.buildings.find(query, {"_id": 0, "location": 0}))
 
     def showAllUsers(self):
-        return list(self.users.find({},{ "_id": 0, "photo": 0, "location": 0, "range": 0}))
+        return list(self.users.find({"logged_in": "yes"},{ "_id": 0, "photo": 0, "location": 0, "range": 0}))
 
     def showUser(self, id):
-        user_data = list(self.users.find({"id": id}, {"_id": 0, "photo": 0}))[0]
+        user_data = list(self.users.find({"id": id, "logged_in": "yes"}, {"_id": 0, "photo": 0}))[0]
         user_data['latitude'] = user_data['location']['coordinates'][1]
         user_data['longitude'] = user_data['location']['coordinates'][0]
         user_data.pop('location', None)
@@ -97,7 +99,6 @@ class appDB:
         new_bot = {"id": self.bot_id, "key": bot_key, "buildings": allowed_buildings}
         self.bots.insert_one(new_bot)
         new_bot.pop('_id', None)
-        print(new_bot)
         return new_bot
 
     def deleteBot(self, bot_id):
@@ -115,7 +116,7 @@ class appDB:
         building_list = list(self.bots.find({"id": bot_id}, {"_id": 0, "buildings": 1}))[0]['buildings']
         to_list = []
         for id in building_list:
-            to_list.extend(self.insideBuilding(id))
+            to_list.extend(self.insideBuilding(id, False, None))
         if not to_list:
             pass
         else:
@@ -127,8 +128,10 @@ class appDB:
 
     def addUser(self, u_id, u_lat, u_long, u_range, u_name, u_photo):
         if not list(self.users.find({"id": u_id})):
-            new_user = {"id": u_id, "name": u_name, "photo": u_photo, "range": u_range, "location": {"type": "Point", "coordinates": [float(u_long), float(u_lat)]}}
+            new_user = {"id": u_id, "name": u_name, "photo": u_photo, "range": u_range, "location": {"type": "Point", "coordinates": [float(u_long), float(u_lat)]}, "logged_in": "yes"}
             self.users.insert_one(new_user)
+        else:
+            self.users.update_many({"id": u_id}, {"$set": {"logged_in": "yes"}})
 
     def getUser(self, u_id):
         return list(self.users.find({"id": u_id}, {"_id": 0}))
@@ -153,6 +156,15 @@ class appDB:
         elif option is 'PHOTO':
             return list(self.users.find(query, {"_id": 0, "location": 0, "range": 0}))
 
+
+    def nearbyBuilding(self, u_id):
+        user_list = []
+        building_list = self.containingBuildings(u_id)
+        for b in building_list:
+            user_list.extend(self.insideBuilding(b["id"], True, u_id))
+        return user_list
+
+
     def sendMessage(self, u_id, message, method):
         to_list = []
         if method is "nearby":
@@ -162,7 +174,7 @@ class appDB:
             to_list = []
             building_list = self.containingBuildings(u_id)
             for b in building_list:
-                to_list.extend(self.insideBuilding(b["id"]))
+                to_list.extend(self.insideBuilding(b["id"], True, u_id))
         else:
             pass
         if not to_list:

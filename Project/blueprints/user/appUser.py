@@ -44,8 +44,8 @@ def verifyUser(id):
     try:
         token = request.cookies.get('token')
         payload = jwt.decode(token, SECRET_KEY_USER, algorithms=['HS256'])
-        print(payload['u_id'])
-        print(id)
+        # print(payload['u_id'])
+        # print(id)
         if id != payload['u_id']:
             return 0
         return 1
@@ -133,7 +133,7 @@ def nearbyUsers(id):
 def insideBuilding(id):
     if verifyUser(id) != 0:
         #TODO : fix this
-        nearby = db.nearbyUsers(id, 'PHOTO')
+        nearby = db.nearbyBuilding(id)
         return jsonify(nearby)
     return redirect(url_for('appUser.homeUser'))
 
