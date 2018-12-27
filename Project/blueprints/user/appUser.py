@@ -141,7 +141,7 @@ def sendMessageNearby(id):
 @appUser.route('/user/<id>/send/building', methods=['POST'])
 def sendMessageBuilding(id):
     message = request.json["message"]
-    db.storeMessage(id, message, "building")
+    db.sendMessage(id, message, "building")
     return redirect(url_for('appUser.loggedUser', id=id))
 
 # TODO: send messages

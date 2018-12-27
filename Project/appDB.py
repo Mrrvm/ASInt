@@ -1,9 +1,12 @@
 import pymongo
+import uuid
 from bson.son import SON
+
 
 building_range = 100.00
 
 class appDB:
+
 
     def __init__(self):
         cluster_url = "mongodb://carlos:12345678q.@clusterasint-shard-00-00-nk7xs.gcp.mongodb.net:27017,clusterasint-shard-00-01-nk7xs.gcp.mongodb.net:27017,clusterasint-shard-00-02-nk7xs.gcp.mongodb.net:27017/test?ssl=true&replicaSet=ClusterASInt-shard-0&authSource=admin&retryWrites=true"
@@ -66,7 +69,7 @@ class appDB:
             '$near': SON([('$geometry', SON([('type', 'Point'), ('coordinates', [float(long_), float(lat_)])])),
                           ('$maxDistance', float(building_range))])}}
         #return without location as it's likely unnecessary
-        return list(self.users.find(query,{ "id": 1}))
+        return list(self.users.find(query,{ "_id": 0, "id": 1}))
 
     def containingBuildings(self, u_id):
         user_location = list(self.users.find({"id": u_id}, {"location": 1, "range": 1}))[0]
@@ -108,7 +111,24 @@ class appDB:
     ##########################################
 
     def botKey(self, bot_id):
-        return list(self.bots.find({"id": bot_id},{"_id":0, "key": 1}))[0]['key']
+        query_result = list(self.bots.find({"id": bot_id},{"_id":0, "key": 1}))
+        if not query_result:
+            return None
+        else:
+            return query_result[0]['key']
+
+    def botMessage(self, bot_id, message):
+        building_list = list(self.bots.find({"id": bot_id}, {"_id": 0, "buildings": 1}))[0]['buildings']
+        to_list = []
+        for id in building_list:
+            to_list.extend(self.insideBuilding(id))
+        if not to_list:
+            pass
+        else:
+            self.message_id = self.message_id + 1
+            self.messages.insert_one({"message": message, "id": self.message_id})
+            for destination in to_list:
+                self.message_table.insert_one({"from": "BOT " + str(bot_id), "to": destination["id"], "id": self.message_id, "rcv": 0})
 
     ##########################################
     # User database operations
@@ -139,17 +159,16 @@ class appDB:
         # return without location as it's likely unnecessary
         return list(self.users.find(query, {"_id": 0, "location": 0, "range": 0}))
 
-    def storeMessage(self, u_id, message, method):
+    def sendMessage(self, u_id, message, method):
         to_list = []
         if method is "nearby":
             to_list = self.nearbyUsers(u_id)
         elif method is "building":
             # set to remove repeated destinations
-            to_list = set()
+            to_list = []
             building_list = self.containingBuildings(u_id)
             for b in building_list:
-                to_list.add(self.insideBuilding(b["id"]))
-            to_list = list(to_list)
+                to_list.extend(self.insideBuilding(b["id"]))
         else:
             pass
         if not to_list:
@@ -167,6 +186,16 @@ class appDB:
             message_text = list(self.messages.find({"id": message["id"]},{"message": 1}))[0]["message"]
             new_messages.append({"from": message["from"], "text": message_text})
         return new_messages
+
+
+    def getAllMessages(self, u_id):
+        all_messages_results = list(self.message_table.find({"to": u_id},{"id": 1, "from": 1}))
+        all_messages = []
+        for message in all_messages_results:
+            message_text = list(self.messages.find({"id": message["id"]},{"message": 1}))[0]["message"]
+            all_messages.append({"from": message["from"], "text": message_text})
+        return all_messages
+
 
     def messagesReceived(self, id_list):
         for id in id_list:
