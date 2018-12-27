@@ -84,7 +84,11 @@
                     </div>
                 </div>
                 <div class="card-footer" style="text-align:center">
-                    <button type="submit" style="border-radius: 0px;" class="btn btn-default btn-light">Logout</button>
+                    <form action="{{ userid }}/logout" method="post">
+                        <div class="form-group">
+                            <button type="submit" style="border-radius: 0px;" class="btn btn-default btn-light ">Logout</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -142,8 +146,7 @@
                     <small>Inbox</small>
                 </h4>
             </div>
-            <div class="card-body">
-            <p class="card-text">Text for this card.</p>
+            <div class="card-body" id="new_msgs">
             </div>
             </div>
         </div>

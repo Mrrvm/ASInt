@@ -44,8 +44,6 @@ def verifyUser(id):
     try:
         token = request.cookies.get('token')
         payload = jwt.decode(token, SECRET_KEY_USER, algorithms=['HS256'])
-        print(payload['u_id'])
-        print(id)
         if id != payload['u_id']:
             return 0
         return 1
@@ -148,9 +146,31 @@ def sendMessageNearby(id):
 @appUser.route('/user/<id>/send/nearby_building', methods=['POST'])
 def sendMessageBuilding(id):
     if verifyUser(id) != 0:
+        # TODO : fix this
         message = request.form["msg_nbb"]
         db.sendMessage(id, message, "building")
         return redirect(url_for('appUser.loggedUser', id=id))
     return redirect(url_for('appUser.homeUser'))
 
-# TODO: send messages
+@appUser.route('/user/<id>/recv', methods=['POST'])
+def recvMessages(id):
+    if verifyUser(id) != 0:
+        msgs = db.getNewMessages(id)
+        return jsonify(msgs)
+    return redirect(url_for('appUser.homeUser'))
+
+@appUser.route('/user/<id>/recvall', methods=['POST'])
+def recvAllMessages(id):
+    if verifyUser(id) != 0:
+        msgs = db.getAllMessages(id)
+        return jsonify(msgs)
+    return redirect(url_for('appUser.homeUser'))
+
+@appUser.route('/user/<id>/logout', methods=['POST'])
+def logout(id):
+    if verifyUser(id) != 0:
+        resp = make_response(redirect(url_for('appUser.homeUser', id=id)))
+        resp.delete_cookie('token') #TODO: not rly working
+        #TODO : set online=0
+        return resp
+    return redirect(url_for('appUser.homeUser'))

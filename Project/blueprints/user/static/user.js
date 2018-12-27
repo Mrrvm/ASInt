@@ -60,8 +60,32 @@ function get_nearby_building(){
     });
 };
 
+function get_new_messages(){
+    $.ajax({
+        url: u_id + '/recv',
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        timeout: 5000,
+        success: [function (data) {
+            console.log(data);
+            var html_data = "";
+            for (var i = 0; i < data.length; i++) {
+                var from = data[i]['from'];
+                var text = data[i]['text'];
+                html_data += "<div class='row'><div class='col-md-12 col-sm-12 mb-12'><p>"+from+" : "+text+"</p></div></div>";
+            }
+            document.getElementById("new_msgs").innerHTML = html_data;
+        }],
+        error: [function () {
+
+        }]
+    });
+};
+
 $(document).ready(function() {
     var nearbyUpdateTime = 60000;
+    var msgsUpdateTime = 2000;
     $('#bb_form').hide();
     $('#br_form').hide();
     get_nearby_range();
@@ -69,4 +93,5 @@ $(document).ready(function() {
 
     setInterval(get_nearby_range, nearbyUpdateTime);
     setInterval(get_nearby_building, nearbyUpdateTime);
+    setInterval(get_new_messages, msgsUpdateTime);
 });
