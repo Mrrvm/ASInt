@@ -148,11 +148,9 @@
             </div>
             <div class="card-body" >
                 <div class="row">
-                    <form id="recvall" action="{{ userid }}/recvall" method="post">
-                        <div class="col-md-12 col-sm-12 mb-12 form-group">
-                            <button type="submit" style="border-radius: 0px;" class="btn btn-default btn-dark">See old messages</button>
-                        </div>
-                    </form>
+                    <div class="col-md-12 col-sm-12 mb-12 form-group">
+                        <button data-toggle="modal" data-target="#all_msgs_modal" id="recvall" type="submit" style="border-radius: 0px;" class="btn btn-default btn-dark">See all messages</button>
+                    </div>
                 </div>
                 <div id="new_msgs">
                 </div>
@@ -161,7 +159,28 @@
         </div>
     </div>
 </div>
-
+<div id="all_msgs_modal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+            <img width="30px" src="{{ url_for('appUser.static', filename='logo.png') }}" alt="logo" />
+            <small>All messages</small>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="container-fluid" id="all_msgs"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 <footer class="footer bg-dark">
     <div class="container">
         <p class="m-0 text-center text-white">2018, Made with <img width="15px" src="{{ url_for('appUser.static', filename='love.png') }}"> for Internet Based Systems Architecture </p>

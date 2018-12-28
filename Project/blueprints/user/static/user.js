@@ -109,6 +109,29 @@ function get_new_messages(){
     });
 };
 
+function get_all_messages(){
+    $.ajax({
+        url: u_id + '/recvall',
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        timeout: 5000,
+        success: [function (data) {
+            console.log(data);
+            var html_data = "";
+            var i;
+            for (i = 0; i < data.length; i++) {
+                var from = data[i]['from'];
+                var text = data[i]['text'];
+                html_data += "<div class='row msg'><div class='col-md-12 col-sm-12 mb-12'><p><div style='font-weight: bold;'>"+from+"</div>"+text+"</p></div></div>";
+            }
+            $('#all_msgs').html(html_data);
+        }],
+        error: [function () {
+
+        }]
+    });
+};
 
 
 $(document).ready(function() {
@@ -118,6 +141,9 @@ $(document).ready(function() {
     $('#br_form').hide();
     get_nearby_range();
     get_nearby_building();
+    $('#recvall').click(function () {
+        get_all_messages();
+    });
 
     setInterval(get_nearby_range, nearbyUpdateTime);
     setInterval(get_nearby_building, nearbyUpdateTime);

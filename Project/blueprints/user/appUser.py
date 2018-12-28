@@ -160,12 +160,12 @@ def recvMessages(id):
         return jsonify(msgs)
     return redirect(url_for('appUser.homeUser'))
 
+
 @appUser.route('/user/<id>/recvall', methods=['POST'])
 def recvAllMessages(id):
     if verifyUser(id) != 0:
         msgs = db.getAllMessages(id)
-        print(msgs)
-        return render_template("recvall.html", msgs=msgs)
+        return jsonify(msgs)
     return redirect(url_for('appUser.homeUser'))
 
 @appUser.route('/user/<id>/ok', methods=['POST'])
