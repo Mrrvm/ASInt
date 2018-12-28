@@ -1,6 +1,6 @@
 import requests
 
-
+# TODO : add logs
 def login():
     print("Login")
     username = input("Username:")
@@ -18,7 +18,7 @@ def login():
 
 def buildings(endpoint, key):
     print("\nChoose one of the following:")
-    u_input = input("[1]AddBuilding  [2]ListAll  [3]ShowBuilding  [4]RemoveBuilding:\n")
+    u_input = input("[1]AddBuilding  [2]ListAll  [3]ShowBuilding  [4]RemoveBuilding\n")
     if u_input == "1":
         building_data = input('Insert NAME, ID, LATITUDE, LONGITUDE (separated by ,):\n')
         b = building_data.split(',')
@@ -45,7 +45,7 @@ def buildings(endpoint, key):
 
 def users(endpoint, key):
     print("\nChoose one of the following:")
-    u_input = input("[1]ListAll  [2]ShowUser:\n")
+    u_input = input("[1]ListAll  [2]ShowUser\n")
     if u_input == "1":
         toSend = {'key': key}
         r = requests.get(endpoint, json=toSend)
@@ -62,7 +62,7 @@ def users(endpoint, key):
 
 def bots(endpoint, key):
     print("\nChoose one of the following:")
-    u_input = input("[1]ListAll  [2]NewBot  [3]DeleteBot:\n")
+    u_input = input("[1]ListAll  [2]NewBot  [3]DeleteBot\n")
     if u_input == "1":
         toSend = {'key': key}
         r = requests.get(endpoint, json=toSend)

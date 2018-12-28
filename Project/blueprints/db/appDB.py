@@ -1,5 +1,6 @@
 import pymongo
 import uuid
+import datetime
 from bson.son import SON
 
 
@@ -121,7 +122,7 @@ class appDB:
             pass
         else:
             self.message_id = self.message_id + 1
-            self.messages.insert_one({"message": message, "id": self.message_id})
+            self.messages.insert_one({"message": message, "id": self.message_id, "datetime": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
             for destination in to_list:
                 self.message_table.insert_one({"from": "BOT " + str(bot_id), "to": destination["id"], "id": self.message_id, "rcv": 0})
 
@@ -185,25 +186,25 @@ class appDB:
             pass
         else:
             self.message_id = self.message_id + 1
-            self.messages.insert_one({"message": message, "id": self.message_id})
+            self.messages.insert_one({"message": message, "id": self.message_id, "datetime": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
             for destination in to_list:
                 self.message_table.insert_one({"from": u_id, "to": destination["id"], "id": self.message_id, "rcv": 0})
 
     def getNewMessages(self, u_id):
-        new_messages_results = list(self.message_table.find({"to": u_id, "rcv": 0},{"id": 1, "from": 1}))
+        new_messages_results = list(self.message_table.find({"to": u_id, "rcv": 0}, {"id": 1, "from": 1, "datetime":1}))
         new_messages = []
         for message in new_messages_results:
-            message_text = list(self.messages.find({"id": message["id"]},{"message": 1}))[0]["message"]
-            new_messages.append({"from": message["from"], "text": message_text})
+            content = list(self.messages.find({"id": message["id"]}, {"message": 1, "datetime": 1}))[0]
+            new_messages.append({"from": message["from"], "text": content["message"], "datetime": content["datetime"]})
         return new_messages
 
 
     def getAllMessages(self, u_id):
-        all_messages_results = list(self.message_table.find({"to": u_id},{"id": 1, "from": 1}))
+        all_messages_results = list(self.message_table.find({"to": u_id}, {"id": 1, "from": 1}))
         all_messages = []
         for message in all_messages_results:
-            message_text = list(self.messages.find({"id": message["id"]},{"message": 1}))[0]["message"]
-            all_messages.append({"from": message["from"], "text": message_text})
+            content = list(self.messages.find({"id": message["id"]}, {"message": 1, "datetime": 1}))[0]
+            all_messages.append({"from": message["from"], "text": content["message"], "datetime": content["datetime"]})
         return all_messages
 
 

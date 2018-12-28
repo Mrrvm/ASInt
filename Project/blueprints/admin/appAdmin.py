@@ -23,7 +23,7 @@ DEFUALT_PORT = "5000"
 DEFAULT_LAT = "38.73"
 DEFAULT_LONG = "-9.14"
 DEFAULT_RANGE = "10"
-admin_login = {"username": "admin", "password": "123", "key": "1M4KAH19PO"}
+admin_login = {"username": "admin", "password": "123", "key": "1M4KAH19PO"} #TODO : change key
 
 
 @appAdmin.route('/admin/login', methods=['POST'])

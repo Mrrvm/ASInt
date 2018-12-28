@@ -1,11 +1,6 @@
 var nMsgs = 0;
 var maxMsgs = 5;
 
-function get_datetime(){
-    var currentdate = new Date();
-    return currentdate.toLocaleString();
-}
-
 
 function get_nearby_range(){
     $.ajax({
@@ -81,9 +76,9 @@ function get_new_messages(){
             var html_data = "";
             var i;
             for (i = 0; i < data.length; i++) {
-                var datetime = get_datetime();
                 var from = data[i]['from'];
                 var text = data[i]['text'];
+                var datetime = data[i]['datetime'];
                 html_data += "<div class='row msg'><div class='col-md-12 col-sm-12 mb-12'><p><div style='font-weight: bold;'>"+from+"</div>"+text+"</p><span class='time-right'>"+datetime+"</span></div></div>";
             }
             if(i != 0) {
@@ -123,7 +118,8 @@ function get_all_messages(){
             for (i = 0; i < data.length; i++) {
                 var from = data[i]['from'];
                 var text = data[i]['text'];
-                html_data += "<div class='row msg'><div class='col-md-12 col-sm-12 mb-12'><p><div style='font-weight: bold;'>"+from+"</div>"+text+"</p></div></div>";
+                var datetime = data[i]['datetime'];
+                html_data += "<div class='row msg'><div class='col-md-12 col-sm-12 mb-12'><p><div style='font-weight: bold;'>"+from+"</div>"+text+"</p><span class='time-right'>"+datetime+"</span></div></div>";
             }
             $('#all_msgs').html(html_data);
         }],

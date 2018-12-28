@@ -33,7 +33,9 @@ img.contacts {
     border-radius: 5px;
     padding-left: 10px;
     padding-right: 10px;
-    margin: 10px;
+    margin-left: 1px;
+    margin-right: 1px;
+    margin-bottom: 10px;
 }
 
 .time-right {
