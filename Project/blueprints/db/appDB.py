@@ -207,6 +207,5 @@ class appDB:
         return all_messages
 
 
-    def messagesReceived(self, id_list):
-        for id in id_list:
-            self.message_table.update_many({"id": id}, {"$set": {"rcv": 1}})
+    def messagesReceived(self, u_id):
+        self.message_table.update_many({"to": u_id}, {"$set": {"rcv": 1}})
