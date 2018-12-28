@@ -173,14 +173,12 @@ def recvAllMessages(id):
 @appUser.route('/user/<id>/ok', methods=['POST'])
 def messagesReceived(id):
     print('ok')
-    messagesReceived(id)
-    return
+    db.messagesReceived(id)
 
 @appUser.route('/user/<id>/logout', methods=['POST'])
 def logout(id):
     if verifyUser(id) != 0:
         resp = make_response(redirect(url_for('appUser.homeUser', id=id)))
-        # resp.delete_cookie('token')
         resp.set_cookie('token', '', expires=0)
         db.logoutUser(id)
         return resp
