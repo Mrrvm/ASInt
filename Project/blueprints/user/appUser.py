@@ -169,6 +169,13 @@ def recvAllMessages(id):
 
 @appUser.route('/user/<id>/recvall', methods=['POST'])
 
+
+@appUser.route('/user/<id>/ok', methods=['POST'])
+def messagesReceived(id):
+    print('ok')
+    messagesReceived(id)
+    return
+
 @appUser.route('/user/<id>/logout', methods=['POST'])
 def logout(id):
     if verifyUser(id) != 0:

@@ -82,8 +82,13 @@ function get_new_messages(){
                 var text = data[i]['text'];
                 html_data += "<div class='row msg'><div class='col-md-12 col-sm-12 mb-12'><p><div style='font-weight: bold;'>"+from+"</div>"+text+"</p><span class='time-right'>"+datetime+"</span></div></div>";
             }
-            console.log(datetime);
             document.getElementById("new_msgs").innerHTML = html_data;
+            var response = 1; // OK
+            $.ajax({
+                url: u_id + '/ok',
+                type: 'POST',
+                data: JSON.stringify(response),
+            })
         }],
         error: [function () {
 
