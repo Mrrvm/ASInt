@@ -171,7 +171,8 @@ def recvAllMessages(id):
 def logout(id):
     if verifyUser(id) != 0:
         resp = make_response(redirect(url_for('appUser.homeUser', id=id)))
-        resp.delete_cookie('token') #TODO: not rly working
+        # resp.delete_cookie('token')
+        resp.set_cookie('token', '', expires=0)
         db.logoutUser(id)
         return resp
     return redirect(url_for('appUser.homeUser'))
