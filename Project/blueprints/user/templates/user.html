@@ -146,7 +146,16 @@
                     <small>Inbox</small>
                 </h4>
             </div>
-            <div class="card-body" id="new_msgs">
+            <div class="card-body" >
+                <div class="row">
+                    <form id="recvall" action="{{ userid }}/recvall" method="post">
+                        <div class="col-md-12 col-sm-12 mb-12 form-group">
+                            <button type="submit" style="border-radius: 0px;" class="btn btn-default btn-dark">See old messages</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="new_msgs">
+                </div>
             </div>
             </div>
         </div>

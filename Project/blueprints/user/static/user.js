@@ -24,16 +24,16 @@ function get_nearby_range(){
                 html_data += "<div class='col-md-2 col-sm-2 mb-2'><img class='contacts' src='" + image.src + "'/></div><div class='col-md-8 col-sm-8 mb-8'><p>" + name + "</p></div><div class='col-md-2 col-sm-2 mb-2'></div>";
             }
             if(i==0) {
-                $('#byrange').append("<div class='col-md-12 col-sm-12 mb-12'><p>Nothing to show.</p></div>");
+                $('#byrange').html("<div class='col-md-12 col-sm-12 mb-12'><p>Nothing to show.</p></div>");
                 $('#br_form').hide();
             }
             else {
-                $('#byrange').append(html_data);
+                $('#byrange').html(html_data);
                 $('#br_form').show();
             }
         }],
         error: [function () {
-            $('#byrange').append("<div class='col-md-12 col-sm-12 mb-12'><p>Nothing to show.</p></div>");
+            $('#byrange').html("<div class='col-md-12 col-sm-12 mb-12'><p>Nothing to show.</p></div>");
         }]
     });
 };
@@ -55,16 +55,16 @@ function get_nearby_building(){
                 html_data += "<div class='col-md-2 col-sm-2 mb-2'><img class='contacts' src='" + image.src + "'/></div><div class='col-md-8 col-sm-8 mb-8'><p>" + name + "</p></div><div class='col-md-2 col-sm-2 mb-2'></div>";
             }
             if(i == 0) {
-                $('#bybuilding').append("<div class='col-md-12 col-sm-12 mb-12'><p>Nothing to show.</p></div>");
+                $('#bybuilding').html("<div class='col-md-12 col-sm-12 mb-12'><p>Nothing to show.</p></div>");
                 $('#bb_form').hide();
             }
             else {
-                $('#bybuilding').append(html_data);
+                $('#bybuilding').html(html_data);
                 $('#bb_form').show();
             }
         }],
         error: [function () {
-            $('#bybuilding').append("<div class='col-md-12 col-sm-12 mb-12'><p>Nothing to show.</p></div>");
+            $('#bybuilding').html("<div class='col-md-12 col-sm-12 mb-12'><p>Nothing to show.</p></div>");
         }]
     });
 };
@@ -88,7 +88,7 @@ function get_new_messages(){
             }
             if(i != 0) {
                 if(nMsgs >= maxMsgs) {
-                    document.getElementById('new_msgs').innerHTML = html_data;
+                    $('#new_msgs').html(html_data);
                     nMsgs = 0;
                 }
                 else {
@@ -108,6 +108,8 @@ function get_new_messages(){
         }]
     });
 };
+
+
 
 $(document).ready(function() {
     var nearbyUpdateTime = 60000;
