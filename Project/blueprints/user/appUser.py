@@ -172,8 +172,10 @@ def recvAllMessages(id):
 
 @appUser.route('/user/<id>/ok', methods=['POST'])
 def messagesReceived(id):
-    print('ok')
-    db.messagesReceived(id)
+    if verifyUser(id) != 0:
+        db.messagesReceived(id)
+        return jsonify('ok')
+    return redirect(url_for('appUser.homeUser'))
 
 @appUser.route('/user/<id>/logout', methods=['POST'])
 def logout(id):
