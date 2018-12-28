@@ -1,3 +1,9 @@
+function get_datetime(){
+    var currentdate = new Date();
+    return currentdate.toLocaleString();
+}
+
+
 function get_nearby_range(){
     $.ajax({
         url: u_id + '/nearby_range',
@@ -71,10 +77,12 @@ function get_new_messages(){
             console.log(data);
             var html_data = "";
             for (var i = 0; i < data.length; i++) {
+                var datetime = get_datetime();
                 var from = data[i]['from'];
                 var text = data[i]['text'];
-                html_data += "<div class='row'><div class='col-md-12 col-sm-12 mb-12'><p>"+from+" : "+text+"</p></div></div>";
+                html_data += "<div class='row msg'><div class='col-md-12 col-sm-12 mb-12'><p><div style='font-weight: bold;'>"+from+"</div>"+text+"</p><span class='time-right'>"+datetime+"</span></div></div>";
             }
+            console.log(datetime);
             document.getElementById("new_msgs").innerHTML = html_data;
         }],
         error: [function () {

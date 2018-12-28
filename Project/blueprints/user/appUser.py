@@ -167,6 +167,8 @@ def recvAllMessages(id):
         return jsonify(msgs)
     return redirect(url_for('appUser.homeUser'))
 
+@appUser.route('/user/<id>/recvall', methods=['POST'])
+
 @appUser.route('/user/<id>/logout', methods=['POST'])
 def logout(id):
     if verifyUser(id) != 0:
