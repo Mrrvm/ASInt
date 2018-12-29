@@ -83,6 +83,16 @@ def single_building(id):
         return jsonify(building)
 
 
+@appAdmin.route('/admin/buildings/<id>/users', methods=['GET'])
+def users_inside_building(id):
+    admin_key = request.json["key"]
+    if admin_key != admin_login['key']:
+        return jsonify({"status": "not logged in"})
+    else:
+        users = db.insideBuilding(id, False, None, "IDS")
+        return jsonify(users)
+
+
 @appAdmin.route('/admin/users', methods=['GET'])
 def showUsers():
     admin_key = request.json["key"]
@@ -101,6 +111,55 @@ def single_user(id):
     else:
         user = db.showUser(id)
         return jsonify(user)
+
+
+@appAdmin.route('/admin/logs/movements', methods=['GET'])
+def showMovements():
+    admin_key = request.json["key"]
+    if admin_key != admin_login['key']:
+        return jsonify({"status": "not logged in"})
+    else:
+        moves = db.showAllMovements()
+        return jsonify(moves)
+
+@appAdmin.route('/admin/logs/movements/user/<id>', methods=['GET'])
+def showMovementsByUser(id):
+    admin_key = request.json["key"]
+    if admin_key != admin_login['key']:
+        return jsonify({"status": "not logged in"})
+    else:
+        moves = db.showUserMovements(id)
+        return jsonify(moves)
+
+
+@appAdmin.route('/admin/logs/messages', methods=['GET'])
+def showMessages():
+    admin_key = request.json["key"]
+    if admin_key != admin_login['key']:
+        return jsonify({"status": "not logged in"})
+    else:
+        messages = db.showAllMessages()
+        return jsonify(messages)
+
+@appAdmin.route('/admin/logs/messages/user/<id>', methods=['GET'])
+def showMessagesByUser(id):
+    admin_key = request.json["key"]
+    if admin_key != admin_login['key']:
+        return jsonify({"status": "not logged in"})
+    else:
+        user_messages = db.showUserMessages(id)
+        return jsonify(user_messages)
+
+@appAdmin.route('/admin/logs/messages/building/<id>', methods=['GET'])
+def showMessagesByBuilding(id):
+    admin_key = request.json["key"]
+    if admin_key != admin_login['key']:
+        return jsonify({"status": "not logged in"})
+    else:
+        building_messages = db.showBuildingMessages(id)
+        print(building_messages)
+        return jsonify(building_messages)
+
 
 @appAdmin.route('/admin/bots', methods=['GET'])
 def showBots():

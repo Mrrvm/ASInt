@@ -21,6 +21,7 @@ class appDB:
         self.buildings.create_index([("location", pymongo.GEOSPHERE)])
         self.users.create_index([("location", pymongo.GEOSPHERE)])
         self.bots = self.database["bots"]
+        self.movements = self.database["movements"]
 
         # get maximum id from existing messages
         messages_ids_results = list(self.message_table.find({}, {"_id": 0, "id": 1}))
@@ -59,7 +60,7 @@ class appDB:
         b_data.pop('location', None)
         return b_data
 
-    def insideBuilding(self, b_id, excluding, u_id):
+    def insideBuilding(self, b_id, excluding, u_id, option):
         building_location = list(self.buildings.find({"id": b_id}, {"location": 1}))[0]
         lat_ = building_location['location']['coordinates'][1]
         long_ = building_location['location']['coordinates'][0]
@@ -69,7 +70,10 @@ class appDB:
         # has to exclude sender of messages of searcher of nearby
         if excluding:
             query['id'] = {'$ne': u_id}
-        return list(self.users.find(query, {"_id": 0, "location": 0, "range": 0}))
+        if option is 'IDS':
+            return list(self.users.find(query, {"_id": 0, "id": 1}))
+        elif option is 'PHOTO':
+            return list(self.users.find(query, {"_id": 0, "location": 0, "range": 0}))
 
     def containingBuildings(self, u_id):
         user_location = list(self.users.find({"id": u_id}, {"location": 1, "range": 1}))[0]
@@ -117,14 +121,25 @@ class appDB:
         building_list = list(self.bots.find({"id": bot_id}, {"_id": 0, "buildings": 1}))[0]['buildings']
         to_list = []
         for id in building_list:
-            to_list.extend(self.insideBuilding(id, False, None))
+            to_list.extend(self.insideBuilding(id, False, None, "IDS"))
         if not to_list:
             pass
         else:
             self.message_id = self.message_id + 1
             self.messages.insert_one({"message": message, "id": self.message_id, "datetime": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
             for destination in to_list:
+                message = {"from": "BOT " + str(bot_id), "to": destination["id"], "id": self.message_id, "rcv": 0}
+                # if message was sent to entire building then saves building id in message
+                message["buildings"] = building_list
+                self.message_table.insert_one(message)
                 self.message_table.insert_one({"from": "BOT " + str(bot_id), "to": destination["id"], "id": self.message_id, "rcv": 0})
+
+
+    def showAllMovements(self):
+        return list(self.movements.find({},{ "_id": 0}))
+
+    def showUserMovements(self, u_id):
+        return list(self.movements.find({"user_id": u_id},{ "_id": 0}))
 
 
     def addUser(self, u_id, u_lat, u_long, u_range, u_name, u_photo):
@@ -143,6 +158,8 @@ class appDB:
 
     def defineLocation(self, u_id, u_lat, u_long):
         self.users.update_many({"id": u_id}, {"$set": {"location": {"type": "Point", "coordinates": [float(u_long), float(u_lat)]}}})
+        new_movement = {"user_id": u_id, "new_latitude": u_lat, "new_longitude": u_long, "datetime": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+        self.movements.insert_one(new_movement)
 
     def defineRange(self, u_id, u_range):
         self.users.update_many({"id": u_id}, {"$set": {"range": u_range}})
@@ -157,7 +174,7 @@ class appDB:
                                        ('$maxDistance', float(u_range))])}, 'id': {'$ne': u_id}}
         # return without location as it's likely unnecessary
         if option is 'IDS':
-            return list(self.users.find(query, {"id": 1}))
+            return list(self.users.find(query, {"_id": 0, "id": 1}))
         elif option is 'PHOTO':
             return list(self.users.find(query, {"_id": 0, "location": 0, "range": 0}))
 
@@ -166,20 +183,20 @@ class appDB:
         user_list = []
         building_list = self.containingBuildings(u_id)
         for b in building_list:
-            user_list.extend(self.insideBuilding(b["id"], True, u_id))
+            user_list.extend(self.insideBuilding(b["id"], True, u_id, "PHOTO"))
         return user_list
 
 
     def sendMessage(self, u_id, message, method):
         to_list = []
+        building_list = []
         if method is "nearby":
             to_list = self.nearbyUsers(u_id, 'IDS')
         elif method is "building":
-            # set to remove repeated destinations
             to_list = []
             building_list = self.containingBuildings(u_id)
             for b in building_list:
-                to_list.extend(self.insideBuilding(b["id"], True, u_id))
+                to_list.extend(self.insideBuilding(b["id"], True, u_id, "IDS"))
         else:
             pass
         if not to_list:
@@ -188,7 +205,11 @@ class appDB:
             self.message_id = self.message_id + 1
             self.messages.insert_one({"message": message, "id": self.message_id, "datetime": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
             for destination in to_list:
-                self.message_table.insert_one({"from": u_id, "to": destination["id"], "id": self.message_id, "rcv": 0})
+                message = {"from": u_id, "to": destination["id"], "id": self.message_id, "rcv": 0}
+                # if message was sent to entire building then saves building id in message
+                if method is "building":
+                    message["buildings"] = [building['id'] for building in building_list]
+                self.message_table.insert_one(message)
 
     def getNewMessages(self, u_id):
         new_messages_results = list(self.message_table.find({"to": u_id, "rcv": 0}, {"id": 1, "from": 1, "datetime":1}))
@@ -205,6 +226,32 @@ class appDB:
         for message in all_messages_results:
             content = list(self.messages.find({"id": message["id"]}, {"message": 1, "datetime": 1}))[0]
             all_messages.append({"from": message["from"], "text": content["message"], "datetime": content["datetime"]})
+        return all_messages
+
+    def showUserMessages(self, u_id):
+        all_messages_results = list(self.message_table.find({"$or": [{"to": u_id}, {"from": u_id}]}, {"id": 1, "to":1, "from": 1}))
+        all_messages = []
+        for message in all_messages_results:
+            content = list(self.messages.find({"id": message["id"]}, {"message": 1, "datetime": 1}))[0]
+            all_messages.append({"from": message["from"], "to": message["to"], "text": content["message"], "datetime": content["datetime"]})
+        return all_messages
+
+    def showBuildingMessages(self, b_id):
+        print("hey")
+        all_messages_results = list(self.message_table.find({"buildings": b_id}, {"id": 1, "to":1, "from": 1}))
+        all_messages = []
+        for message in all_messages_results:
+            content = list(self.messages.find({"id": message["id"]}, {"message": 1, "datetime": 1}))[0]
+            all_messages.append({"from": message["from"], "to": message["to"], "text": content["message"], "datetime": content["datetime"]})
+        return all_messages
+
+
+    def showAllMessages(self):
+        all_messages_results = list(self.message_table.find({}, {"id": 1, "to":1, "from": 1}))
+        all_messages = []
+        for message in all_messages_results:
+            content = list(self.messages.find({"id": message["id"]}, {"message": 1, "datetime": 1}))[0]
+            all_messages.append({"from": message["from"], "to": message["to"], "text": content["message"], "datetime": content["datetime"]})
         return all_messages
 
 
