@@ -8,7 +8,7 @@ def login(endpoint):
     username = input("Username:")
     password = input("Password:")
     toSend = {'username': username, 'password': password}
-    r = requests.post(endpoint + '/login', json=toSend) #TODO change IP to any
+    r = requests.post(endpoint + '/login', json=toSend)
     login_response = r.json()
     if login_response['status'] == "error during login":
         print("Wrong credentials")
@@ -28,21 +28,21 @@ def buildings(endpoint, key):
         r = requests.post(endpoint + "/add", json=toSend)
     elif u_input == "2":
         toSend = {'key': key}
-        r = requests.get(endpoint, json=toSend)
+        r = requests.post(endpoint, json=toSend)
         b_list = r.json()
         for b in b_list:
             print("ID: " + b['id'] + " Name: " + b['name'])
     elif u_input == "3":
         b_id = input("Building id: ")
         toSend = {'key': key}
-        r = requests.get(endpoint + "/" + b_id, json=toSend)
+        r = requests.post(endpoint + "/" + b_id, json=toSend)
         building = r.json()
         for key, val in building.items():
             print(key + ": " + str(val))
     elif u_input == "4":
         b_id = input("Building id: ")
         toSend = {'key': key}
-        r = requests.get(endpoint + "/" + b_id + "/users", json=toSend)
+        r = requests.post(endpoint + "/" + b_id + "/users", json=toSend)
         user_list = r.json()
         users = [user['id'] for user in user_list]
         for u in users:
@@ -58,14 +58,14 @@ def users(endpoint, key):
     u_input = input("[1]ListAll  [2]ShowUser\n")
     if u_input == "1":
         toSend = {'key': key}
-        r = requests.get(endpoint, json=toSend)
+        r = requests.post(endpoint, json=toSend)
         user_list = r.json()
         for u in user_list:
             print("ID: " + u['id'] + " Name: " + u['name'])
     elif u_input == "2":
         u_id = input("User id: ")
         toSend = {'key': key}
-        r = requests.get(endpoint + "/" + u_id, json=toSend)
+        r = requests.post(endpoint + "/" + u_id, json=toSend)
         user = r.json()
         for key, val in user.items():
             print(key + ": " + str(val))
@@ -75,7 +75,7 @@ def bots(endpoint, key):
     u_input = input("[1]ListAll  [2]NewBot  [3]DeleteBot\n")
     if u_input == "1":
         toSend = {'key': key}
-        r = requests.get(endpoint, json=toSend)
+        r = requests.post(endpoint, json=toSend)
         bot_list = r.json()
         for bot in bot_list:
             print("ID: " + str(bot['id']) + " Key: " + bot['key'] + " Buildings: " + str(bot['buildings']))
@@ -98,7 +98,7 @@ def logs(endpoint, key):
         u_input = input("[1]AllMovements  [2]AllMessages\n")
         if u_input == "1":
             toSend = {'key': key}
-            r = requests.get(endpoint + "/movements", json=toSend)
+            r = requests.post(endpoint + "/movements", json=toSend)
             movement_list = r.json()
             for move in movement_list:
                 print("\nMovement:")
@@ -107,7 +107,7 @@ def logs(endpoint, key):
             #print(movement_list)
         elif u_input == "2":
             toSend = {'key': key}
-            r = requests.get(endpoint + "/messages", json=toSend)
+            r = requests.post(endpoint + "/messages", json=toSend)
             message_list = r.json()
             for message in message_list:
                 print("\nMessage:")
@@ -118,7 +118,7 @@ def logs(endpoint, key):
         u_input = input("[1]UserMovements  [2]UserMessages\n")
         if u_input == "1":
             toSend = {'key': key}
-            r = requests.get(endpoint + "/movements/user/" + user_id, json=toSend)
+            r = requests.post(endpoint + "/movements/user/" + user_id, json=toSend)
             movement_list = r.json()
             for move in movement_list:
                 print("\nMovement:")
@@ -126,7 +126,7 @@ def logs(endpoint, key):
                     print(key + ": " + str(val))
         elif u_input == "2":
             toSend = {'key': key}
-            r = requests.get(endpoint + "/messages/user/" + user_id, json=toSend)
+            r = requests.post(endpoint + "/messages/user/" + user_id, json=toSend)
             message_list = r.json()
             for message in message_list:
                 print("\nMessage:")
@@ -135,7 +135,7 @@ def logs(endpoint, key):
     elif u_input == "3":
         building_id = input("Building id: ")
         toSend = {'key': key}
-        r = requests.get(endpoint + "/messages/building/" + building_id, json=toSend)
+        r = requests.post(endpoint + "/messages/building/" + building_id, json=toSend)
         message_list = r.json()
         for message in message_list:
             print("\nMessage:")

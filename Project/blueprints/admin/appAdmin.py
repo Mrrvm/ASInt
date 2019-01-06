@@ -14,6 +14,7 @@ from flask import Blueprint
 from flask import request
 from flask import jsonify
 from blueprints.db.db import db
+import uuid
 
 appAdmin = Blueprint('appAdmin', __name__, template_folder='templates')
 
@@ -23,7 +24,7 @@ DEFUALT_PORT = "5000"
 DEFAULT_LAT = "38.73"
 DEFAULT_LONG = "-9.14"
 DEFAULT_RANGE = "10"
-admin_login = {"username": "admin", "password": "123", "key": "1M4KAH19PO"} #TODO : change key
+admin_login = {"username": "admin", "password": "123", "key": uuid.uuid4().hex}
 
 
 @appAdmin.route('/admin/login', methods=['POST'])
@@ -35,7 +36,7 @@ def adminLogin():
     else:
         return jsonify({"status": "error during login"})
 
-@appAdmin.route('/admin/buildings', methods=['GET'])
+@appAdmin.route('/admin/buildings', methods=['POST'])
 def showBuildings():
     admin_key = request.json["key"]
     if admin_key != admin_login['key']:
@@ -73,7 +74,7 @@ def removeBuilding():
             db.removeBuilding(b_id)
             return '', 204
 
-@appAdmin.route('/admin/buildings/<id>', methods=['GET'])
+@appAdmin.route('/admin/buildings/<id>', methods=['POST'])
 def single_building(id):
     admin_key = request.json["key"]
     if admin_key != admin_login['key']:
@@ -83,7 +84,7 @@ def single_building(id):
         return jsonify(building)
 
 
-@appAdmin.route('/admin/buildings/<id>/users', methods=['GET'])
+@appAdmin.route('/admin/buildings/<id>/users', methods=['POST'])
 def users_inside_building(id):
     admin_key = request.json["key"]
     if admin_key != admin_login['key']:
@@ -93,7 +94,7 @@ def users_inside_building(id):
         return jsonify(users)
 
 
-@appAdmin.route('/admin/users', methods=['GET'])
+@appAdmin.route('/admin/users', methods=['POST'])
 def showUsers():
     admin_key = request.json["key"]
     if admin_key != admin_login['key']:
@@ -103,7 +104,7 @@ def showUsers():
         return jsonify(users)
 
 
-@appAdmin.route('/admin/users/<id>', methods=['GET'])
+@appAdmin.route('/admin/users/<id>', methods=['POST'])
 def single_user(id):
     admin_key = request.json["key"]
     if admin_key != admin_login['key']:
@@ -113,7 +114,7 @@ def single_user(id):
         return jsonify(user)
 
 
-@appAdmin.route('/admin/logs/movements', methods=['GET'])
+@appAdmin.route('/admin/logs/movements', methods=['POST'])
 def showMovements():
     admin_key = request.json["key"]
     if admin_key != admin_login['key']:
@@ -122,7 +123,7 @@ def showMovements():
         moves = db.showAllMovements()
         return jsonify(moves)
 
-@appAdmin.route('/admin/logs/movements/user/<id>', methods=['GET'])
+@appAdmin.route('/admin/logs/movements/user/<id>', methods=['POST'])
 def showMovementsByUser(id):
     admin_key = request.json["key"]
     if admin_key != admin_login['key']:
@@ -132,7 +133,7 @@ def showMovementsByUser(id):
         return jsonify(moves)
 
 
-@appAdmin.route('/admin/logs/messages', methods=['GET'])
+@appAdmin.route('/admin/logs/messages', methods=['POST'])
 def showMessages():
     admin_key = request.json["key"]
     if admin_key != admin_login['key']:
@@ -141,7 +142,7 @@ def showMessages():
         messages = db.showAllMessages()
         return jsonify(messages)
 
-@appAdmin.route('/admin/logs/messages/user/<id>', methods=['GET'])
+@appAdmin.route('/admin/logs/messages/user/<id>', methods=['POST'])
 def showMessagesByUser(id):
     admin_key = request.json["key"]
     if admin_key != admin_login['key']:
@@ -150,7 +151,7 @@ def showMessagesByUser(id):
         user_messages = db.showUserMessages(id)
         return jsonify(user_messages)
 
-@appAdmin.route('/admin/logs/messages/building/<id>', methods=['GET'])
+@appAdmin.route('/admin/logs/messages/building/<id>', methods=['POST'])
 def showMessagesByBuilding(id):
     admin_key = request.json["key"]
     if admin_key != admin_login['key']:
@@ -161,7 +162,7 @@ def showMessagesByBuilding(id):
         return jsonify(building_messages)
 
 
-@appAdmin.route('/admin/bots', methods=['GET'])
+@appAdmin.route('/admin/bots', methods=['POST'])
 def showBots():
     admin_key = request.json["key"]
     if admin_key != admin_login['key']:

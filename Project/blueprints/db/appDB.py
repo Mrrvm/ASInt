@@ -237,21 +237,41 @@ class appDB:
         return all_messages
 
     def showBuildingMessages(self, b_id):
-        print("hey")
         all_messages_results = list(self.message_table.find({"buildings": b_id}, {"id": 1, "to":1, "from": 1}))
         all_messages = []
+        last_id = None
+        message_index = -1
         for message in all_messages_results:
-            content = list(self.messages.find({"id": message["id"]}, {"message": 1, "datetime": 1}))[0]
-            all_messages.append({"from": message["from"], "to": message["to"], "text": content["message"], "datetime": content["datetime"]})
+            if message["id"] is not last_id:
+                last_id = message["id"]
+                message_index = message_index + 1
+                content = list(self.messages.find({"id": message["id"]}, {"_id": 0, "message": 1, "datetime": 1}))[0]
+                all_messages.append({"from": message["from"], "to": [message["to"]], "text": content["message"],
+                                     "datetime": content["datetime"]})
+            else:
+                all_messages[message_index]["to"].append(message["to"])
+            #content = list(self.messages.find({"id": message["id"]}, {"message": 1, "datetime": 1}))[0]
+            #all_messages.append({"from": message["from"], "to": message["to"], "text": content["message"], "datetime": content["datetime"]})
         return all_messages
 
 
     def showAllMessages(self):
-        all_messages_results = list(self.message_table.find({}, {"id": 1, "to":1, "from": 1}))
+        all_messages_results = list(self.message_table.find({}, {"_id": 0, "id": 1, "to":1, "from": 1}))
+        print(all_messages_results)
         all_messages = []
+        last_id = None
+        message_index = -1
         for message in all_messages_results:
-            content = list(self.messages.find({"id": message["id"]}, {"message": 1, "datetime": 1}))[0]
-            all_messages.append({"from": message["from"], "to": message["to"], "text": content["message"], "datetime": content["datetime"]})
+            if message["id"] is not last_id:
+                last_id = message["id"]
+                message_index = message_index + 1
+                content = list(self.messages.find({"id": message["id"]}, {"_id": 0, "message": 1, "datetime": 1}))[0]
+                all_messages.append({"from": message["from"], "to": [message["to"]], "text": content["message"],
+                                     "datetime": content["datetime"]})
+            else:
+                all_messages[message_index]["to"].append(message["to"])
+            #print(content)
+            #all_messages.append({"from": message["from"], "to": message["to"], "text": content["message"], "datetime": content["datetime"]})
         return all_messages
 
 
