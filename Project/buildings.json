@@ -1,0 +1,33 @@
+{
+  "buildings" : [ {
+    "id" : "7939",
+    "name" : "Pavilhao de Civil",
+    "lat": 38.7368263,
+    "long" : -9.139276
+  }, {
+    "id" : "6760",
+    "name" : "Pavilhao de Informatica",
+    "lat": 38.7374625,
+    "long": -9.1378465
+  }, {
+    "id" : "1399",
+    "name" : "Torre Sul",
+    "lat": 38.7363775,
+    "long": -9.138574
+  },{
+    "id" : "6421",
+    "name" : "Torre Norte",
+    "lat" : 38.7375584,
+    "long" : -9.1387255
+  },{
+    "id" : "8524",
+    "name" : "Pavilhao de Fisica",
+    "lat": 38.7358895,
+    "long": -9.1399463
+  },{
+    "id" : "2063",
+    "name" : "Pavilhao Central",
+    "lat": 38.7368098,
+    "long": -9.1397191
+  }]
+}

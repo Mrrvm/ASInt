@@ -1,4 +1,5 @@
 import requests
+import json
 
 # endpoint = "https://elegant-folder-226910.appspot.com/admin"
 endpoint = "http://127.0.0.1:5000/admin"
@@ -22,10 +23,19 @@ def buildings(endpoint, key):
     print("\nChoose one of the following:")
     u_input = input("[1]AddBuilding  [2]ListAll  [3]ShowBuilding  [4]UsersInBuilding  [5]RemoveBuilding\n")
     if u_input == "1":
-        building_data = input('Insert NAME, ID, LATITUDE, LONGITUDE (separated by ,):\n')
-        b = building_data.split(',')
-        toSend = {'name': b[0], 'id': b[1], 'lat': b[2], 'long': b[3], 'key': key}
-        r = requests.post(endpoint + "/add", json=toSend)
+        u_input = input("[1]SingleBuilding  [2]BuildingFile\n")
+        if u_input == "1":
+            building_data = input('Insert NAME, ID, LATITUDE, LONGITUDE (separated by ,):\n')
+            b = building_data.split(',')
+            toSend = {'name': b[0], 'id': b[1], 'lat': b[2], 'long': b[3], 'key': key}
+            r = requests.post(endpoint + "/add", json=toSend)
+        elif u_input == "2":
+            filename = input("Filename: ")
+            with open(filename) as f:
+                data = json.load(f)
+            for b in data["buildings"]:
+                toSend = {'name': b["name"], 'id': b["id"], 'lat': b["long"], 'long': b["long"], 'key': key}
+                r = requests.post(endpoint + "/add", json=toSend)
     elif u_input == "2":
         toSend = {'key': key}
         r = requests.post(endpoint, json=toSend)
