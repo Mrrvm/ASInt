@@ -47,16 +47,25 @@ def buildings(endpoint, key):
         toSend = {'key': key}
         r = requests.post(endpoint + "/" + b_id, json=toSend)
         building = r.json()
-        for key, val in building.items():
-            print(key + ": " + str(val))
+        if building is None:
+            print("No building with specified id")
+        else:
+            for key, val in building.items():
+                print(key + ": " + str(val))
     elif u_input == "4":
         b_id = input("Building id: ")
         toSend = {'key': key}
         r = requests.post(endpoint + "/" + b_id + "/users", json=toSend)
         user_list = r.json()
-        users = [user['id'] for user in user_list]
-        for u in users:
-            print("ID: " + u)
+        if user_list is None:
+            print("No building with specified id")
+        else:
+            users = [user['id'] for user in user_list]
+            if not users:
+                print("No users in building")
+            else:
+                for u in users:
+                    print("ID: " + u)
     elif u_input == "5":
         b_id = input("Building id: ")
         toSend = {'id': b_id, 'key': key}
@@ -77,8 +86,11 @@ def users(endpoint, key):
         toSend = {'key': key}
         r = requests.post(endpoint + "/" + u_id, json=toSend)
         user = r.json()
-        for key, val in user.items():
-            print(key + ": " + str(val))
+        if user is None:
+            print("No user with specified id")
+        else:
+            for key, val in user.items():
+                print(key + ": " + str(val))
 
 def bots(endpoint, key):
     print("\nChoose one of the following:")

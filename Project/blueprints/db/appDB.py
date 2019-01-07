@@ -54,14 +54,21 @@ class appDB:
         return list(self.buildings.find({},{ "_id": 0, "location": 0}))
 
     def showBuilding(self, id):
-        b_data = list(self.buildings.find({"id": id},{ "_id": 0}))[0]
-        b_data['latitude'] = b_data['location']['coordinates'][1]
-        b_data['longitude'] = b_data['location']['coordinates'][0]
-        b_data.pop('location', None)
-        return b_data
+        b_data_list = list(self.buildings.find({"id": id},{ "_id": 0}))
+        if b_data_list:
+            b_data = b_data_list[0]
+            b_data['latitude'] = b_data['location']['coordinates'][1]
+            b_data['longitude'] = b_data['location']['coordinates'][0]
+            b_data.pop('location', None)
+            return b_data
+        else:
+            return None
 
     def insideBuilding(self, b_id, excluding, u_id, option):
-        building_location = list(self.buildings.find({"id": b_id}, {"location": 1}))[0]
+        building_location_list = list(self.buildings.find({"id": b_id}, {"location": 1}))
+        if not building_location_list:
+            return None
+        building_location = building_location_list[0]
         lat_ = building_location['location']['coordinates'][1]
         long_ = building_location['location']['coordinates'][0]
         query = {'location': {
@@ -89,7 +96,10 @@ class appDB:
         return list(self.users.find({"logged_in": "yes"},{ "_id": 0, "photo": 0, "location": 0, "range": 0}))
 
     def showUser(self, id):
-        user_data = list(self.users.find({"id": id, "logged_in": "yes"}, {"_id": 0, "photo": 0}))[0]
+        user_data_list = list(self.users.find({"id": id, "logged_in": "yes"}, {"_id": 0, "photo": 0}))
+        if not user_data_list:
+            return None
+        user_data = user_data_list[0]
         user_data['latitude'] = user_data['location']['coordinates'][1]
         user_data['longitude'] = user_data['location']['coordinates'][0]
         user_data.pop('location', None)
@@ -121,7 +131,10 @@ class appDB:
         building_list = list(self.bots.find({"id": bot_id}, {"_id": 0, "buildings": 1}))[0]['buildings']
         to_list = []
         for id in building_list:
-            to_list.extend(self.insideBuilding(id, False, None, "IDS"))
+            users_inside_building = self.insideBuilding(id, False, None, "IDS")
+            # building may not exist
+            if users_inside_building is not None:
+                to_list.extend(users_inside_building)
         if not to_list:
             pass
         else:
