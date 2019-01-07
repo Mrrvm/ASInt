@@ -19,7 +19,8 @@ COOKIE_TIME = 60*60*8
 CACHE_TIME = 120
 SECRET_KEY_USER = uuid.uuid4().hex
 fenixEdu_ClientId = "1695915081465915"
-fenixEdu_redirectURL = "http://127.0.0.1:5000/user/auth"
+# fenixEdu_redirectURL = "http://127.0.0.1:5000/user/auth"
+fenixEdu_redirectURL = "https://elegant-folder-226910.appspot.com/user/auth"
 fenixEdu_ClientSecret = "xCzg7GMrhRI5ncklUy+wN3fl6UOdjHKVhUlWWaT5Ibm/PTbS5TEkJsmt5F62IwTXnZ5xGcqeMeia7K021Mtm6g=="
 DEFAULT_IP = "127.0.0.1"
 DEFAULT_PORT = "5000"

@@ -1,8 +1,8 @@
 import requests
 import json
 
-# endpoint = "https://elegant-folder-226910.appspot.com/admin"
-endpoint = "http://127.0.0.1:5000/admin"
+endpoint = "https://elegant-folder-226910.appspot.com/admin"
+# endpoint = "http://127.0.0.1:5000/admin"
 
 def login(endpoint):
     print("Login")

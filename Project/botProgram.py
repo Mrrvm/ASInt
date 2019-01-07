@@ -2,8 +2,8 @@ import requests
 import time
 
 
-# endpoint = "https://elegant-folder-226910.appspot.com/bot"
-endpoint = "http://127.0.0.1:5000/bot"
+endpoint = "https://elegant-folder-226910.appspot.com/bot"
+# endpoint = "http://127.0.0.1:5000/bot"
 
 def turn_on_bot():
     print("Insert Bot ID, key and message")
