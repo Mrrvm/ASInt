@@ -34,7 +34,7 @@ def buildings(endpoint, key):
             with open(filename) as f:
                 data = json.load(f)
             for b in data["buildings"]:
-                toSend = {'name': b["name"], 'id': b["id"], 'lat': b["long"], 'long': b["long"], 'key': key}
+                toSend = {'name': b["name"], 'id': b["id"], 'lat': b["lat"], 'long': b["long"], 'key': key}
                 r = requests.post(endpoint + "/add", json=toSend)
     elif u_input == "2":
         toSend = {'key': key}

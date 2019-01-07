@@ -196,7 +196,8 @@ class appDB:
         building_list = self.containingBuildings(u_id)
         for b in building_list:
             user_list.extend(self.insideBuilding(b["id"], True, u_id, "PHOTO"))
-        return user_list
+        # remove possible duplicates
+        return [dict(t) for t in {tuple(d.items()) for d in user_list}]
 
 
     def sendMessage(self, u_id, message, method):

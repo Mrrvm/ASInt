@@ -23,8 +23,8 @@ fenixEdu_redirectURL = "http://127.0.0.1:5000/user/auth"
 fenixEdu_ClientSecret = "xCzg7GMrhRI5ncklUy+wN3fl6UOdjHKVhUlWWaT5Ibm/PTbS5TEkJsmt5F62IwTXnZ5xGcqeMeia7K021Mtm6g=="
 DEFAULT_IP = "127.0.0.1"
 DEFAULT_PORT = "5000"
-DEFAULT_LAT = "38.737653"
-DEFAULT_LONG = "-9.138655"
+DEFAULT_LAT = "38.7368098"
+DEFAULT_LONG = "-9.1397191"
 DEFAULT_RANGE = "100"
 
 def verifyUser(id):
