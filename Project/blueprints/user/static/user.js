@@ -129,14 +129,27 @@ function get_all_messages(){
     });
 };
 
+function sendLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+        $.ajax({
+            url: u_id + '/location',
+            type: 'POST',
+            data: { lat: "'"+position.coords.latitude+"'", long: "'"+position.coords.longitude+"'"},
+        })
+    });
+  }
+}
 
 $(document).ready(function() {
+
     var nearbyUpdateTime = 60000;
     var msgsUpdateTime = 2000;
     $('#bb_form').hide();
     $('#br_form').hide();
     get_nearby_range();
     get_nearby_building();
+    sendLocation();
     $('#recvall').click(function () {
         get_all_messages();
     });
