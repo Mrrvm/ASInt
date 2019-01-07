@@ -1,15 +1,3 @@
-"""
-appAdmin.py
-Contains the following user routes
-/admin/login
-/admin/buildings
-/admin/buildings/add
-/admin/buildings/remove
-/admin/buildings/<id>
-/admin/users
-/admin/users/<id>
-"""
-
 from flask import Blueprint
 from flask import request
 from flask import jsonify

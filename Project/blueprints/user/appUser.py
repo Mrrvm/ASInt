@@ -1,16 +1,3 @@
-"""
-appUser.py
-Contains the following user routes
-/
-/home
-/user/login
-/users/auth
-/user/<id>
-/user/<id>/location
-/user/<id>/nearby
-/user/<id>/buildings
-"""
-
 from flask import Blueprint
 from flask import jsonify
 from flask import render_template
@@ -29,15 +16,16 @@ appUser = Blueprint('appUser', __name__, template_folder='templates', static_url
 
 
 COOKIE_TIME = 60*60*8
+CACHE_TIME = 120
 SECRET_KEY_USER = uuid.uuid4().hex
 fenixEdu_ClientId = "1695915081465915"
 fenixEdu_redirectURL = "http://127.0.0.1:5000/user/auth"
 fenixEdu_ClientSecret = "xCzg7GMrhRI5ncklUy+wN3fl6UOdjHKVhUlWWaT5Ibm/PTbS5TEkJsmt5F62IwTXnZ5xGcqeMeia7K021Mtm6g=="
 DEFAULT_IP = "127.0.0.1"
 DEFAULT_PORT = "5000"
-DEFAULT_LAT = "38.73"
-DEFAULT_LONG = "-9.14"
-DEFAULT_RANGE = "10"
+DEFAULT_LAT = "38.737653"
+DEFAULT_LONG = "-9.138655"
+DEFAULT_RANGE = "100"
 
 def verifyUser(id):
     # I apolagize. No patience for decoding errors of ancient cookies.
@@ -54,10 +42,12 @@ def verifyUser(id):
 
 @appUser.route('/')
 def init():
+    cache.clear()
     return homeUser()
 
 @appUser.route('/home/')
 def homeUser():
+    cache.clear()
     return render_template("home.html")
 
 
@@ -90,7 +80,7 @@ def authUser():
 
 
 @appUser.route('/user/<id>')
-@cache.cached(timeout=50) #TODO: too long?
+@cache.cached(timeout=CACHE_TIME)
 def loggedUser(id):
     if verifyUser(id) != 0:
         u_data = db.getUser(id)[0]
@@ -107,6 +97,7 @@ def loggedUser(id):
 @appUser.route('/user/<id>/location', methods=['POST'])
 def defineLocation(id):
     if verifyUser(id) != 0:
+        cache.clear()
         lat = request.form["lat"]
         long = request.form["long"]
         db.defineLocation(id, lat, long)
@@ -116,6 +107,7 @@ def defineLocation(id):
 @appUser.route('/user/<id>/range', methods=['POST'])
 def defineRange(id):
     if verifyUser(id) != 0:
+        cache.clear()
         range = request.form["range"]
         db.defineRange(id, range)
         return redirect(url_for('appUser.loggedUser', id=id))
@@ -132,7 +124,6 @@ def nearbyUsers(id):
 @appUser.route('/user/<id>/nearby_buildings', methods=['POST'])
 def insideBuilding(id):
     if verifyUser(id) != 0:
-        #TODO : fix this
         nearby = db.nearbyBuilding(id)
         return jsonify(nearby)
     return redirect(url_for('appUser.homeUser'))
@@ -178,6 +169,7 @@ def messagesReceived(id):
 @appUser.route('/user/<id>/logout', methods=['POST'])
 def logout(id):
     if verifyUser(id) != 0:
+        cache.clear()
         resp = make_response(redirect(url_for('appUser.homeUser', id=id)))
         resp.set_cookie('token', '', expires=0)
         db.logoutUser(id)

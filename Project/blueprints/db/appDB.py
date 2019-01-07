@@ -270,8 +270,6 @@ class appDB:
                                      "datetime": content["datetime"]})
             else:
                 all_messages[message_index]["to"].append(message["to"])
-            #content = list(self.messages.find({"id": message["id"]}, {"message": 1, "datetime": 1}))[0]
-            #all_messages.append({"from": message["from"], "to": message["to"], "text": content["message"], "datetime": content["datetime"]})
         return all_messages
 
 
@@ -290,8 +288,6 @@ class appDB:
                                      "datetime": content["datetime"]})
             else:
                 all_messages[message_index]["to"].append(message["to"])
-            #print(content)
-            #all_messages.append({"from": message["from"], "to": message["to"], "text": content["message"], "datetime": content["datetime"]})
         return all_messages
 
 

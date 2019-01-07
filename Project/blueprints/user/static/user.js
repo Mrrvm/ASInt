@@ -129,16 +129,46 @@ function get_all_messages(){
     });
 };
 
-function sendLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function (position) {
+function validateInputLocation() {
+
+    var lat = document.getElementById("lat").value;
+    var long = document.getElementById("long").value;
+
+    if (isNaN(lat) || lat < 0 || lat > 90) {
+        alert("Input not valid");
+    }
+    else if (isNaN(long) || long < 0 || long > 180) {
+        alert("Input not valid");
+    }
+    else {
         $.ajax({
             url: u_id + '/location',
             type: 'POST',
-            data: { lat: "'"+position.coords.latitude+"'", long: "'"+position.coords.longitude+"'"},
+            data: { lat: lat, long: long },
+            success: [function () {
+                location.reload();
+            }]
         })
-    });
-  }
+    }
+}
+
+function validateInputRange() {
+
+    var range = document.getElementById("range").value;
+
+    if (isNaN(range) || range < 0 || range > 1000) {
+        alert("Input not valid");
+    }
+    else {
+        $.ajax({
+            url: u_id + '/range',
+            type: 'POST',
+            data: { range: range },
+            success: [function () {
+                location.reload();
+            }]
+        })
+    }
 }
 
 $(document).ready(function() {
@@ -149,7 +179,6 @@ $(document).ready(function() {
     $('#br_form').hide();
     get_nearby_range();
     get_nearby_building();
-    sendLocation();
     $('#recvall').click(function () {
         get_all_messages();
     });

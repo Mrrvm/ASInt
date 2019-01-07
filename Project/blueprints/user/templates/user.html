@@ -50,37 +50,36 @@
                         </script>
                         <div class="row">
                             <div class="col-md-12 col-sm-12 mb-12">
-                                <p>Define new location ({{ lat }}:{{ long }})</p>
+                                <p>Define new Location <div id="latlong">({{ lat }} : {{ long }})</div></p>
                             </div>
                         </div>
-                        <form action="{{ userid }}/location" method="post">
-                            <div class="row">
-                                <div class="col-md-4 col-sm-4 mb-4 form-group">
-                                    <input type="text" class="form-control" id="lat" name="lat" placeholder="Latitude">
-                                </div>
-                                <div class="col-md-4 col-sm-4 mb-4 form-group">
-                                    <input type="text" class="form-control" id="long" name="long" placeholder="Longitude">
-                                </div>
-                                <div class="col-md-4 col-sm-4 mb-4 form-group" style="text-align:center">
-                                    <button type="submit" style="border-radius: 0px;" class="btn btn-default btn-dark">Submit</button>
-                                </div>
+
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 mb-4 form-group">
+                                <input type="text" class="form-control" id="lat" name="lat" placeholder="Latitude">
                             </div>
-                        </form>
+                            <div class="col-md-4 col-sm-4 mb-4 form-group">
+                                <input type="text" class="form-control" id="long" name="long" placeholder="Longitude">
+                            </div>
+                            <div class="col-md-4 col-sm-4 mb-4 form-group" style="text-align:center">
+                                <button onclick="validateInputLocation()" type="submit" style="border-radius: 0px;" class="btn btn-default btn-dark">Submit</button>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-md-12 col-sm-12 mb-12">
                                 <p>Define new range ({{ range }})</p>
                             </div>
                         </div>
-                        <form action="{{ userid }}/range" method="post">
-                            <div class="row">
-                                <div class="col-md-8 col-sm-8 mb-8 form-group">
-                                    <input type="text" class="form-control" id="range" name="range" placeholder="Range">
-                                </div>
-                                <div class="col-md-4 col-sm-4 mb-4 form-group" style="text-align:center">
-                                    <button type="submit" style="border-radius: 0px;" class="btn btn-default btn-dark">Submit</button>
-                                </div>
+
+                        <div class="row">
+                            <div class="col-md-8 col-sm-8 mb-8 form-group">
+                                <input type="text" class="form-control" id="range" name="range" placeholder="Range">
                             </div>
-                        </form>
+                            <div class="col-md-4 col-sm-4 mb-4 form-group" style="text-align:center">
+                                <button onclick="validateInputRange()" type="submit" style="border-radius: 0px;" class="btn btn-default btn-dark">Submit</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer" style="text-align:center">
